@@ -1,0 +1,52 @@
+/* Contenedor que asegura el espacio */
+.carousel-container {
+    width: 100%;
+    max-width: 1200px;
+    /* Opcional: limita el ancho máximo en pantallas muy grandes */
+    margin: 0 auto;
+    /* Centra el carrusel */
+}
+
+swiper-container {
+    width: 100%;
+    /* Altura calculada para tus fotos: 
+     Si las fotos son 1024x600, una altura de 450px a 500px queda muy bien en web */
+    height: 500px;
+    border-radius: 12px;
+    /* Bordes redondeados estéticos */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    /* Sombra elegante */
+}
+
+swiper-slide {
+    background: #1a1a1a;
+    /* Fondo oscuro por si tarda en cargar la imagen */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* CRUCIAL: 'cover' recorta los bordes sobrantes para llenar el espacio sin estirar el coche */
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Ajuste para móviles: hacemos el carrusel más bajito */
+@media (max-width: 768px) {
+    swiper-container {
+        height: 250px;
+    }
+}
+
+.skeleton-loader {
+    height: 500px;
+    background: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888;
+}

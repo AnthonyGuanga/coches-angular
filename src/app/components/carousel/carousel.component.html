@@ -1,0 +1,21 @@
+@if (slides && slides.length > 0) {
+
+<div class="carousel-container">
+
+    <swiper-container style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff;" [slidesPerView]="1"
+        [loop]="true" [pagination]="true" [navigation]="true" [autoplay]="{ delay: 3000, disableOnInteraction: false }"
+        speed="600" ngSkipHydration>
+
+        @for (item of slides; track item.title) {
+        <swiper-slide>
+            <img [src]="item.img" [alt]="item.title" loading="lazy">
+        </swiper-slide>
+        }
+
+    </swiper-container>
+
+</div>
+
+} @else {
+<div class="skeleton-loader">Cargando coches...</div>
+}
