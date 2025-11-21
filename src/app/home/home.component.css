@@ -1,6 +1,6 @@
 .home-container {
     /* Le damos un alto mínimo para que el footer no se suba */
-    min-height: calc(100vh - 200px);
+ 
     display: flex;
     flex-direction: column;
     justify-content: center;
