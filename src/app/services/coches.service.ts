@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { 
-  Firestore, // El servicio principal de Firestore
-  collection, // Función para referenciar una colección
-  collectionData, // Función para obtener datos de una colección
+  Firestore, 
+  collection, // referenciar una colección
+  collectionData, // obtener datos de una colección
   CollectionReference, 
   DocumentData 
 } from '@angular/fire/firestore';
@@ -14,7 +14,7 @@ export interface Coche {
   marca: string;
   modelo: string;
   precio: number;
-  // Puedes añadir más campos (color, año, km...)
+
 }
 
 @Injectable({
