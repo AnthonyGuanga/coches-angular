@@ -1,1 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
+/* src/styles.css */
+
+body {
+  margin: 0;       /* Quita el espacio blanco de los bordes */
+  padding: 0;      /* Por seguridad */
+  overflow-x: hidden; /* Evita el scroll horizontal innecesario */
+}
