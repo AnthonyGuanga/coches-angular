@@ -1,0 +1,31 @@
+MARCA,MODELO,NOMBREIMAGEN,COMBUSTIBLE,KILOMETRAJE,AÑO,PRECIO,MOTOR,CAMBIO
+Audi,A5,audiA5,Gasolina,"8,000 km",2020,"55,000 €",1400cc,Automático
+Honda,Jazz,hondaJazz,Híbrido,"21,000 km",2020,"26,000 €",1500cc,Automático
+Honda,Civic,hondaCivic,Gasolina,"28,000 km",2021,"25,000 €",1500cc,Automático
+Honda,E Class,hondaE,Híbrido,"44,000 km",2021,"18,500 €",1500cc,Automático
+Honda,Fit,hondaFit,Gasolina,"17,000 km",2021,"27,000 €",1500cc,Automático
+Honda,CR-V,hondaCR-V,Híbrido,"17,000 km",2020,"26,500 €",1500cc,Automático
+Honda,City,hondaCity,Gasolina,"55,000 km",2020,"20,500 €",1500cc,Automático
+Honda,NWgn,hondaNwgn,Gasolina,"32,000 km",2020,"24,500 €",660cc,Automático
+Honda,HR-V,hondaHR-V,Gasolina,52 km,2023,"21,000 €",1500cc,Automático
+Hyundai,Kaona,hyundaiKaona,Gasolina,"13,700 km",2021,"25,600 €",2000cc,Automático
+Hyundai,Tucson,hyundaiTuscon,Gasolina,50 km,2023,"20,000 €",2000cc,Automático
+Hyundai,Santa Fe,hyundaiSantaFe,Híbrido,25 km,2023,"25,700 €",2500cc,Automático
+KIA,Stonic,kiaStonic,Gasolina,33 km,2023,"20,600 €",1400cc,Automático
+KIA,Optima,kiaOptima,Gasolina,"7,500 km",2022,"22,000 €",3500cc,Automático
+KIA,Sorento,kiaSorento,Híbrido,36 km,2023,"21,500 €",3500cc,Automático
+Mercedes Benz,GLA Class,mercedesGLA,Gasolina,"15,000 km",2020,"44,500 €",1600cc,Automático
+Mercedes Benz,GLB Class,mercedesGLB,Gasolina,40 km,2021,"35,000 €",1300cc,Automático
+Mercedes Benz,E Class,mercedesEClass,Gasolina,"6,000 km",2022,"46,000 €",1500cc,Automático
+Nissan,Micra,nissan,Gasolina,"6,500 km",2021,"23,000 €",1200cc,Automático
+Nissan,Qashqai,nissan,Híbrido,"16,827 km",2020,"21,100 €",1200cc,Automático
+Nissan,Juke,nissan,Híbrido,"11,000 km",2021,"22,000 €",660cc,Automático
+Nissan,Roox,nissan,Gasolina,"2,800 km",2020,"23,800 €",660cc,Automático
+Toyota,Aygo,toyota,Híbrido,"8,000 km",2020,"27,000 €",1500cc,Automático
+Toyota,C-HR,toyota,Híbrido,"1,000 km",2022,"30,500 €",3500cc,Automático
+Toyota,Corolla,toyota,Gasolina,10 km,2023,"25,000 €",1800cc,Automático
+Toyota,RAV4,toyota,Híbrido,"17,000 km",2020,"30,500 €",1000cc,Automático
+Toyota,Yaris,toyota,Híbrido,"16,000 km",2022,"23,000 €",1500cc,Automático
+Toyota,ProAce,toyota,Gasolina,"9,500 km",2022,"27,000 €",1000cc,Automático
+Toyota,Prius+,toyota,Híbrido,"5,000 km",2021,"28,200 €",2700cc,Automático
+Toyota,Vitz,toyota,Gasolina,"10,000 km",2021,"18,300 €",1000cc,Automático
