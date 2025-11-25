@@ -1,31 +1,31 @@
 MARCA,MODELO,NOMBREIMAGEN,COMBUSTIBLE,KILOMETRAJE,AÑO,PRECIO,MOTOR,CAMBIO
-Audi,A5,audiA5,Gasolina,"8,000 km",2020,"55,000 €",1400cc,Automático
-Honda,Jazz,hondaJazz,Híbrido,"21,000 km",2020,"26,000 €",1500cc,Automático
-Honda,Civic,hondaCivic,Gasolina,"28,000 km",2021,"25,000 €",1500cc,Automático
-Honda,E Class,hondaE,Híbrido,"44,000 km",2021,"18,500 €",1500cc,Automático
-Honda,Fit,hondaFit,Gasolina,"17,000 km",2021,"27,000 €",1500cc,Automático
-Honda,CR-V,hondaCR-V,Híbrido,"17,000 km",2020,"26,500 €",1500cc,Automático
-Honda,City,hondaCity,Gasolina,"55,000 km",2020,"20,500 €",1500cc,Automático
-Honda,NWgn,hondaNwgn,Gasolina,"32,000 km",2020,"24,500 €",660cc,Automático
-Honda,HR-V,hondaHR-V,Gasolina,52 km,2023,"21,000 €",1500cc,Automático
-Hyundai,Kaona,hyundaiKaona,Gasolina,"13,700 km",2021,"25,600 €",2000cc,Automático
-Hyundai,Tucson,hyundaiTuscon,Gasolina,50 km,2023,"20,000 €",2000cc,Automático
-Hyundai,Santa Fe,hyundaiSantaFe,Híbrido,25 km,2023,"25,700 €",2500cc,Automático
-KIA,Stonic,kiaStonic,Gasolina,33 km,2023,"20,600 €",1400cc,Automático
-KIA,Optima,kiaOptima,Gasolina,"7,500 km",2022,"22,000 €",3500cc,Automático
-KIA,Sorento,kiaSorento,Híbrido,36 km,2023,"21,500 €",3500cc,Automático
-Mercedes Benz,GLA Class,mercedesGLA,Gasolina,"15,000 km",2020,"44,500 €",1600cc,Automático
-Mercedes Benz,GLB Class,mercedesGLB,Gasolina,40 km,2021,"35,000 €",1300cc,Automático
-Mercedes Benz,E Class,mercedesEClass,Gasolina,"6,000 km",2022,"46,000 €",1500cc,Automático
-Nissan,Micra,nissanMicra,Gasolina,"6,500 km",2021,"23,000 €",1200cc,Automático
-Nissan,Qashqai,nissanQashqai,Híbrido,"16,827 km",2020,"21,100 €",1200cc,Automático
-Nissan,Juke,nissanJuke,Híbrido,"11,000 km",2021,"22,000 €",660cc,Automático
-Nissan,Roox,nissanRoox,Gasolina,"2,800 km",2020,"23,800 €",660cc,Automático
-Toyota,Aygo,toyotaAygo,Híbrido,"8,000 km",2020,"27,000 €",1500cc,Automático
-Toyota,C-HR,toyotaC-HR,Híbrido,"1,000 km",2022,"30,500 €",3500cc,Automático
-Toyota,Corolla,toyotaCorolla,Gasolina,10 km,2023,"25,000 €",1800cc,Automático
-Toyota,RAV4,toyotaRAV4,Híbrido,"17,000 km",2020,"30,500 €",1000cc,Automático
-Toyota,Yaris,toyotaYaris,Híbrido,"16,000 km",2022,"23,000 €",1500cc,Automático
-Toyota,ProAce,toyotaProAce,Gasolina,"9,500 km",2022,"27,000 €",1000cc,Automático
-Toyota,Prius+,toyotaPrius+,Híbrido,"5,000 km",2021,"28,200 €",2700cc,Automático
-Toyota,Vitz,toyotaVitz,Gasolina,"10,000 km",2021,"18,300 €",1000cc,Automático
+Audi,A5,audiA5,Gasolina,8000,2020,55000,1400cc,Automático
+Honda,Jazz,hondaJazz,Híbrido,21000,2020,26000,1500cc,Automático
+Honda,Civic,hondaCivic,Gasolina,28000,2021,25000,1500cc,Automático
+Honda,E Class,hondaE,Híbrido,44000,2021,18500,1500cc,Automático
+Honda,Fit,hondaFit,Gasolina,17000,2021,27000,1500cc,Automático
+Honda,CR-V,hondaCR-V,Híbrido,17000,2020,26500,1500cc,Automático
+Honda,City,hondaCity,Gasolina,55000,2020,20500,1500cc,Automático
+Honda,NWgn,hondaNwgn,Gasolina,32000,2020,24500,660cc,Automático
+Honda,HR-V,hondaHR-V,Gasolina,5200,2023,21000,1500cc,Automático
+Hyundai,Kaona,hyundaiKaona,Gasolina,13700,2021,25600,2000cc,Automático
+Hyundai,Tucson,hyundaiTuscon,Gasolina,5000,2023,20000,2000cc,Automático
+Hyundai,Santa Fe,hyundaiSantaFe,Híbrido,2500,2023,25700,2500cc,Automático
+KIA,Stonic,kiaStonic,Gasolina,3300,2023,20600,1400cc,Automático
+KIA,Optima,kiaOptima,Gasolina,7500,2022,22000,3500cc,Automático
+KIA,Sorento,kiaSorento,Híbrido,3600,2023,21500,3500cc,Automático
+Mercedes Benz,GLA Class,mercedesGLA,Gasolina,15000,2020,44500,1600cc,Automático
+Mercedes Benz,GLB Class,mercedesGLB,Gasolina,4000,2021,35000,1300cc,Automático
+Mercedes Benz,E Class,mercedesEClass,Gasolina,6000,2022,46000,1500cc,Automático
+Nissan,Micra,nissanMicra,Gasolina,6500,2021,23000,1200cc,Automático
+Nissan,Qashqai,nissanQashqai,Híbrido,16827,2020,21100,1200cc,Automático
+Nissan,Juke,nissanJuke,Híbrido,11000,2021,22000,660cc,Automático
+Nissan,Roox,nissanRoox,Gasolina,2800,2020,23800,660cc,Automático
+Toyota,Aygo,toyotaAygo,Híbrido,8000,2020,27000,1500cc,Automático
+Toyota,C-HR,toyotaC-HR,Híbrido,"19,000",2022,30500,3500cc,Automático
+Toyota,Corolla,toyotaCorolla,Gasolina,2000,2023,25000,1800cc,Automático
+Toyota,RAV4,toyotaRAV4,Híbrido,17000,2020,30500,1000cc,Automático
+Toyota,Yaris,toyotaYaris,Híbrido,16000,2022,23000,1500cc,Automático
+Toyota,ProAce,toyotaProAce,Gasolina,19500,2022,25000,1000cc,Automático
+Toyota,Prius+,toyotaPrius+,Híbrido,35000,2021,21200,2700cc,Automático
+Toyota,Vitz,toyotaVitz,Gasolina,20000,2021,18300,1000cc,Automático
