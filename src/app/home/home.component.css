@@ -1,24 +1,124 @@
 .home-container {
-    /* Le damos un alto mínimo para que el footer no se suba */
- 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 40px;
-    text-align: center;
+  /* Le damos un alto mínimo para que el footer no se suba */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
 }
 
 button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    color: white;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
+}
+
+/*///////////////////////////////////////////////////////////*/
+/* --- Reemplaza/añade esto --- */
+
+/* Ajustes del grid (opcional: conserva el tuyo) */
+.grid-cars {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 20px;
+  align-items: start; /* evita que el contenido vertical se centre y deforme */
+}
+
+/* Tarjeta */
+.card {
+  padding: 14px 10px;
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+/* HOVER */
+.card:hover {
+  background: #f3f3f3; /* fondo gris suave */
+  transform: translateY(-4px); /* levantar ligero */
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+/* Cambio suave del icono en hover */
+.card:hover .icon svg {
+  transform: scale(1.04) scaleY(0.9); /* un pelín más grande y manteniendo aplastado */
+  transition: transform 0.25s ease;
+}
+
+/* Texto en hover */
+.card:hover p {
+  color: #000;
+  font-weight: 600;
+}
+
+/* Área del icono: más ancha que alta = RECTÁNGULO */
+/* Rectángulo más estrecho */
+.icon {
+  width: 110px; /* antes 140px → ahora más estrecho */
+  height: 52px; /* ligeramente más alto para compensar */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+/* Aplanado más suave del SVG */
+.icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform-origin: center;
+  transform: scaleY(0.88); /* antes 0.78 → menos aplastado */
+}
+
+/* Si algún SVG queda muy centrado arriba/abajo, ajusta su posición con translateY */
+.icon svg.adjust-down {
+  transform: scaleY(0.78) translateY(4%);
+}
+.icon svg.adjust-up {
+  transform: scaleY(0.78) translateY(-4%);
+}
+
+/* Texto */
+.card p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1;
+  color: #222;
+}
+
+/* Responsive: reducir ancho del rectángulo en pantallas pequeñas */
+@media (max-width: 900px) {
+  .icon {
+    width: 110px;
+    height: 48px;
+  }
+  .grid-cars {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media (max-width: 700px) {
+  .icon {
+    width: 95px;
+    height: 44px;
+  }
+  .grid-cars {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

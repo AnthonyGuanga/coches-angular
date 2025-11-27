@@ -1,38 +1,162 @@
 <main class="home-container">
-    <h1>¡Bienvenido a Mi App!</h1>
-    <app-carousel [slides]="bannerImages"></app-carousel>
-    
-    <!-- Sección del anuncio cargado desde Firestore -->
-    <h2 style="margin-top: 30px; border-bottom: 2px solid #3b82f6; padding-bottom: 10px;">
-        Anuncios Destacados de Firestore
-    </h2>
+  <h1>¡Bienvenido a Mi App!</h1>
+  <app-carousel [slides]="bannerImages"></app-carousel>
 
-    <!-- 
+  <!-- Sección del anuncio cargado desde Firestore -->
+  <h2 style="margin-top: 30px; border-bottom: 2px solid #3b82f6; padding-bottom: 10px">
+    Anuncios Destacados de Firestore
+  </h2>
+
+  <!-- //////////////////////////////////////////-->
+  <section class="car-selector">
+    <h1 class="title">Elige tu tipo de coche</h1>
+
+    <div class="grid-cars">
+      <div class="card">
+        <div class="icon">
+          <svg viewBox="0 0 120 60">
+            <g fill="#222">
+              <rect x="8" y="22" width="88" height="18" rx="6" />
+              <path d="M18 22 q6 -12 22 -12 h18 q10 0 22 12 v6 h-62z" />
+              <circle cx="30" cy="46" r="6" />
+              <circle cx="78" cy="46" r="6" />
+            </g>
+          </svg>
+        </div>
+        <p>Turismo</p>
+      </div>
+
+      <div class="card">
+        <div class="icon">
+          <svg viewBox="0 0 120 60">
+            <g fill="#222">
+              <rect x="6" y="18" width="98" height="24" rx="5" />
+              <rect x="22" y="6" width="46" height="20" rx="4" />
+              <circle cx="30" cy="46" r="6" />
+              <circle cx="86" cy="46" r="6" />
+            </g>
+          </svg>
+        </div>
+        <p>SUV y 4x4</p>
+      </div>
+
+      <div class="card">
+        <div class="icon">
+          <svg viewBox="0 0 120 60">
+            <g fill="#222">
+              <rect x="6" y="18" width="100" height="22" rx="6" />
+              <rect x="30" y="6" width="50" height="20" rx="6" />
+              <circle cx="34" cy="46" r="5" />
+              <circle cx="84" cy="46" r="5" />
+            </g>
+          </svg>
+        </div>
+        <p>Monovolumen</p>
+      </div>
+
+      <div class="card">
+        <div class="icon">
+          <svg viewBox="0 0 120 60">
+            <g fill="#222">
+              <rect x="8" y="20" width="86" height="20" rx="5" />
+              <path d="M22 20 q12 -14 34 -14 q14 0 26 12 v6 h-60z" />
+              <circle cx="32" cy="46" r="6" />
+              <circle cx="76" cy="46" r="6" />
+            </g>
+          </svg>
+        </div>
+        <p>Familiar</p>
+      </div>
+
+      <div class="card">
+        <div class="icon">
+          <svg viewBox="0 0 120 60">
+            <g fill="#222">
+              <path d="M10 34 q18 -18 46 -18 q16 0 28 12 q-2 6 -10 8 q-10 3 -20 3 q-16 0 -30 -5z" />
+              <circle cx="36" cy="46" r="6" />
+              <circle cx="84" cy="46" r="6" />
+            </g>
+          </svg>
+        </div>
+        <p>Deportivo</p>
+      </div>
+
+      <div class="card">
+        <div class="icon">
+          <svg viewBox="0 0 120 60">
+            <g fill="#222">
+              <path d="M10 30 q18 -14 46 -14 q20 0 28 8 v6 h-70z" />
+              <rect x="18" y="34" width="76" height="6" rx="3" />
+              <circle cx="34" cy="46" r="6" />
+              <circle cx="86" cy="46" r="6" />
+            </g>
+          </svg>
+        </div>
+        <p>Cabrio</p>
+      </div>
+
+      <div class="card">
+        <div class="icon">
+          <svg viewBox="0 0 120 60">
+            <g fill="#222">
+              <rect x="6" y="14" width="92" height="30" rx="4" />
+              <rect x="66" y="8" width="26" height="18" rx="2" />
+              <circle cx="30" cy="46" r="6" />
+              <circle cx="78" cy="46" r="6" />
+            </g>
+          </svg>
+        </div>
+        <p>Furgoneta</p>
+      </div>
+
+      <div class="card">
+        <div class="icon">
+          <svg viewBox="0 0 120 60">
+            <g fill="#222">
+              <rect x="10" y="20" width="70" height="18" rx="6" />
+              <path d="M18 20 q8 -10 30 -10 q18 0 22 8 v6 h-60z" />
+              <circle cx="30" cy="46" r="6" />
+              <circle cx="70" cy="46" r="6" />
+            </g>
+          </svg>
+        </div>
+        <p>Compacto</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- //////////////////////////////////////////-->
+  <!-- 
       Usamos el pipe 'async' para suscribirnos a coches$ y obtener los datos.
       La variable local 'coches' tendrá la lista de documentos.
     -->
-    <div class="anuncios-grid" *ngIf="coches$ | async as coches">
-        
-        <!-- Recorremos la lista de coches (el *ngFor) -->
-        <div class="anuncio" *ngFor="let coche of coches" style="border: 1px solid #ccc; padding: 15px; margin: 10px; border-radius: 8px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); background-color: #f9f9f9;">
-            <h3>{{ coche.marca }} {{ coche.modelo }}</h3>
-            <!-- El pipe currency formatea el número como moneda EUR -->
-            <p style="font-weight: bold; color: #10b981;">Precio: {{ coche.precio | currency:'EUR':'symbol':'1.0-0' }}</p>
-            <p><small style="color: #6b7280;">ID de Firestore: {{ coche.id }}</small></p>
-        </div>
-
-        <!-- Mensaje si la base de datos está vacía (aunque la conexión funcione) -->
-        <div *ngIf="coches.length === 0">
-            <p>No se encontraron anuncios de coches en la base de datos.</p>
-        </div>
+  <div class="anuncios-grid" *ngIf="coches$ | async as coches">
+    <!-- Recorremos la lista de coches (el *ngFor) -->
+    <div
+      class="anuncio"
+      *ngFor="let coche of coches"
+      style="
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin: 10px;
+        border-radius: 8px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+      "
+    >
+      <h3>{{ coche.marca }} {{ coche.modelo }}</h3>
+      <!-- El pipe currency formatea el número como moneda EUR -->
+      <p style="font-weight: bold; color: #10b981">
+        Precio: {{ coche.precio | currency : 'EUR' : 'symbol' : '1.0-0' }}
+      </p>
+      <p>
+        <small style="color: #6b7280">ID de Firestore: {{ coche.id }}</small>
+      </p>
     </div>
-    
-    <p>
-        Este es el componente "home", que actúa como el contenido principal (el body)
-        de tu página de inicio.
-    </p>
-    
-    <button>Conoce más</button>
-    <h2>Lo que dicen los clientes</h2>
 
+    <!-- Mensaje si la base de datos está vacía (aunque la conexión funcione) -->
+    <div *ngIf="coches.length === 0">
+      <p>No se encontraron anuncios de coches en la base de datos.</p>
+    </div>
+  </div>
 </main>
