@@ -132,18 +132,22 @@
     -->
   <div class="anuncios-grid" *ngIf="coches$ | async as coches">
     <!-- Recorremos la lista de coches (el *ngFor) -->
-    <div class="anuncio" *ngFor="let coche of coches" style="
+    <div
+      class="anuncio"
+      *ngFor="let coche of coches"
+      style="
         border: 1px solid #ccc;
         padding: 15px;
         margin: 10px;
         border-radius: 8px;
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
         background-color: #f9f9f9;
-      ">
-      <h3>{{ coche.MARCA }} {{ coche.MODELO }}</h3>
+      "
+    >
+      <h3>{{ coche.marca }} {{ coche.modelo }}</h3>
       <!-- El pipe currency formatea el número como moneda EUR -->
       <p style="font-weight: bold; color: #10b981">
-        Precio: {{ coche.PRECIO | currency : 'EUR' : 'symbol' : '1.0-0' }}
+        Precio: {{ coche.precio | currency : 'EUR' : 'symbol' : '1.0-0' }}
       </p>
       <p>
         <small style="color: #6b7280">ID de Firestore: {{ coche.id }}</small>

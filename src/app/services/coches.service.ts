@@ -6,41 +6,42 @@ import {
   CollectionReference,
   DocumentData,
   doc,
-  docData
+  docData,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 export interface Coche {
   id: string;
-  ANIO?: number;
-  CAMBIO?: string;
-  COMBUSTIBLE?: string;
-  KILOMETRAJE?: number;
-  MARCA?: string;
-  MODELO?: string;
-  MOTOR?: string;
-  NOMBREIMAGEN?: string;
-  PRECIO?: number;
+  anio?: number;
+  cambio?: string;
+  combustible?: string;
+  kilometraje?: number;
+  marca?: string;
+  modelo?: string;
+  motor?: string;
+  nombreImagen?: string;
+  precio?: number;
   fotoPrincipal?: string;
 
   fotos?: string[];
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CochesService {
-
   // usar inject() → recomendado por Angular & AngularFire
   private firestore = inject(Firestore);
 
-  private cochesCollection: CollectionReference<DocumentData> =
-    collection(this.firestore, 'coches');
+  private cochesCollection: CollectionReference<DocumentData> = collection(
+    this.firestore,
+    'coches'
+  );
 
   /** 🔹 OBTENER TODOS LOS COCHES */
   public getCoches(): Observable<Coche[]> {
     return collectionData(this.cochesCollection, {
-      idField: 'id'
+      idField: 'id',
     }) as Observable<Coche[]>;
   }
 
