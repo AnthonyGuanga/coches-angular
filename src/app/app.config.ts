@@ -5,6 +5,8 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 // --- NUEVAS IMPORTACIONES DE FIREBASE ---
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+// ¡AÑADIR ESTA IMPORTACIÓN!
+import { getAuth, provideAuth } from '@angular/fire/auth'; 
 import { environment } from '../environments/environment'; 
 // -----------------------------------------
 
@@ -17,11 +19,14 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes), 
     provideClientHydration(withEventReplay()),
 
-    // --- NUEVOS PROVEEDORES DE FIREBASE ---
+    // --- PROVEEDORES DE FIREBASE ---
     // 1. Inicializa la aplicación de Firebase con la configuración del entorno.
     provideFirebaseApp(() => initializeApp(environment.firebase)), 
     // 2. Provee la conexión de Firestore (Base de Datos).
-    provideFirestore(() => getFirestore())
+    provideFirestore(() => getFirestore()),
+    
+    // 3. ¡NUEVO! Provee la conexión de Authentication (LOGIN/USUARIOS).
+    provideAuth(() => getAuth()) 
     // -----------------------------------------
   ]
 };
