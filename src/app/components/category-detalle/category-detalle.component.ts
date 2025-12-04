@@ -17,30 +17,16 @@ register();
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CategoryDetalleComponent implements OnInit {
-
   private route = inject(ActivatedRoute);
   private cochesService = inject(CochesService);
 
-  coche$!: Observable<Coche | null>;
-  fotos$!: Observable<string[]>;
+  coche$!: Observable<Coche | undefined>;
 
-  ngOnInit(): void {
-
+  ngOnInit() {
     this.coche$ = this.route.paramMap.pipe(
       switchMap(params => {
-        const id = params.get('id')!;
-        return this.cochesService.getCoches().pipe(
-          map(coches => coches.find(c => c.id === id) || null)
-        );
-      })
-    );
-
-    this.fotos$ = this.route.paramMap.pipe(
-      switchMap(params => {
-        const id = params.get('id')!;
-        return this.cochesService.getCoches().pipe(
-          map(coches => coches.find(c => c.id === id)?.fotos ?? [])
-        );
+        const id = params.get('id') || '';
+        return this.cochesService.getCocheById(id);
       })
     );
 
