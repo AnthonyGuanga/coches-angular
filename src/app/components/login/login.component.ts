@@ -31,7 +31,6 @@ export class LoginComponent {
     this.authForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      // ¡NUEVOS CAMPOS AÑADIDOS! Por defecto, son opcionales hasta que se cambia el modo.
       nombre: [''],
       telefono: ['', Validators.pattern('^[0-9]{9}$')] // Validación simple de 9 dígitos
     });
