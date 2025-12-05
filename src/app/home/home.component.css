@@ -122,3 +122,106 @@ button:hover {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+/* =========================================
+   CONTENEDOR DEL GRID (LA MAQUETACIÓN)
+   ========================================= */
+.anuncios-grid {
+  display: grid;
+
+  /* 👇 LA MAGIA DEL GRID RESPONSIVE:
+     - auto-fill: Crea tantas columnas como quepan en la pantalla.
+     - minmax(300px, 1fr): Cada tarjeta medirá mínimo 300px. 
+       Si sobra espacio, se estira (1fr) para llenar el hueco. 
+  */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+  gap: 2rem; /* Espacio entre tarjetas (horizontal y vertical) */
+  margin-top: 2rem;
+  width: 100%;
+}
+
+/* =========================================
+   ESTILO DE LA TARJETA (PARA QUE SE VEA BIEN EN EL GRID)
+   ========================================= */
+.anuncio {
+  background: white;
+  border-radius: var(--radius);
+  border: 1px solid #e2e8f0;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  /* 👇 Importante para que la tarjeta ocupe toda la altura de la fila del grid */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.anuncio:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+  border-color: var(--primary);
+}
+
+/* --- IMAGEN --- */
+.anuncio-imagen-wrapper {
+  width: 100%;
+  height: 220px; /* Altura fija de la foto */
+  background-color: #f1f5f9;
+  overflow: hidden;
+  position: relative;
+}
+
+.anuncio-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Recorta la imagen para que llene el hueco */
+  transition: transform 0.5s ease;
+}
+
+.anuncio:hover .anuncio-img {
+  transform: scale(1.1); /* Zoom al pasar el ratón */
+}
+
+/* --- CONTENIDO --- */
+.anuncio-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Hace que este div ocupe todo el espacio sobrante */
+}
+
+.anuncio h3 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+  color: var(--dark);
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.anuncio-detalles {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.anuncio-precio {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--primary);
+  margin-top: auto; /* 👇 EMPUJA EL PRECIO AL FINAL DE LA TARJETA SIEMPRE */
+  text-align: right;
+  letter-spacing: -1px;
+}
+
+.anuncio-id {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-top: 10px;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 8px;
+}

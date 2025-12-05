@@ -39,7 +39,7 @@
             </g>
           </svg>
         </div>
-        <p>monovolumen</p>
+        <p>Monovolumen</p>
       </div>
 
       <div
@@ -57,7 +57,7 @@
             </g>
           </svg>
         </div>
-        <p>familiar</p>
+        <p>Familiar</p>
       </div>
 
       <div
@@ -74,7 +74,7 @@
             </g>
           </svg>
         </div>
-        <p>hatchback</p>
+        <p>Hatchback</p>
       </div>
 
       <div
@@ -128,10 +128,11 @@
             </g>
           </svg>
         </div>
-        <p>Sedan</p>
+        <p>Sedán</p>
       </div>
     </div>
   </section>
+
   <h2 style="margin-top: 30px; border-bottom: 2px solid #3b82f6; padding-bottom: 10px">
     Anuncios Destacados @if (categoriaSeleccionada) {
     <span style="color: #3b82f6; font-size: 0.8em"> (Mostrando: {{ categoriaSeleccionada }}) </span>
@@ -144,42 +145,52 @@
 
   <div class="anuncios-grid">
     @for (coche of coches; track coche.id) {
-    <div
-      class="anuncio"
-      style="
-        border: 1px solid #ccc;
-        padding: 15px;
-        margin: 10px;
-        border-radius: 8px;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-        background-color: #f9f9f9;
-      "
-    >
-      <h3>{{ coche.marca }} {{ coche.modelo }}</h3>
 
-      <p style="font-weight: bold; color: #10b981">
-        Precio: {{ coche.precio | currency : 'EUR' : 'symbol' : '1.0-0' }}
-      </p>
+    <div class="anuncio">
+      <div class="anuncio-imagen-wrapper">
+        <img
+          [src]="coche.fotoPrincipal"
+          alt="{{ coche.marca }}"
+          class="anuncio-img"
+          onerror="this.src='https://via.placeholder.com/300x200?text=Sin+Foto'"
+        />
+      </div>
 
-      <p>
-        <small style="color: #6b7280">ID: {{ coche.id }}</small>
-      </p>
+      <div class="anuncio-content">
+        <h3>
+          {{ coche.marca }} <span style="color: #2563eb">{{ coche.modelo }}</span>
+        </h3>
+
+        <p class="anuncio-detalles">
+          {{ coche.anio }} • {{ coche.combustible }} • {{ coche.cambio }}
+        </p>
+
+        <span class="anuncio-precio">
+          {{ coche.precio | currency : 'EUR' : 'symbol' : '1.0-0' }}
+        </span>
+      </div>
     </div>
     } @empty {
-    <div style="padding: 20px; text-align: center; width: 100%">
-      <p>
-        No se encontraron anuncios de tipo <strong>{{ categoriaSeleccionada }}</strong
-        >.
+    <div style="grid-column: 1 / -1; text-align: center; padding: 40px">
+      <p style="font-size: 1.2rem; color: #64748b">
+        No hay coches disponibles para <strong>{{ categoriaSeleccionada }}</strong>
       </p>
       <button
         (click)="filtrarPorTipo(categoriaSeleccionada!)"
-        style="padding: 5px 10px; cursor: pointer"
+        style="
+          padding: 10px 20px;
+          background: #2563eb;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          margin-top: 10px;
+        "
       >
-        Quitar filtros
+        Ver todos los coches
       </button>
     </div>
     }
   </div>
-
   }
 </main>
