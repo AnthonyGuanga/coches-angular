@@ -22,19 +22,50 @@ export class LoginComponent {
   private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
 
-  // Propiedad para el formulario reactivo
   public authForm: FormGroup;
-  // Propiedad para mostrar mensajes de error al usuario
   public errorMessage: string = '';
-  // Bandera para cambiar entre modo 'login' y 'register'
   public isLoginMode: boolean = true; 
 
   constructor() {
     // Inicialización del formulario con validadores
     this.authForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      // ¡NUEVOS CAMPOS AÑADIDOS! Por defecto, son opcionales hasta que se cambia el modo.
+      nombre: [''],
+      telefono: ['', Validators.pattern('^[0-9]{9}$')] // Validación simple de 9 dígitos
     });
+    
+    // Configuración inicial de los campos de registro
+    this.setValidators();
+  }
+  
+  /**
+   * Establece o elimina los validadores para nombre y teléfono
+   * según si estamos en modo Login o Registro.
+   */
+  private setValidators(): void {
+    const nombreControl = this.authForm.get('nombre');
+    const telefonoControl = this.authForm.get('telefono');
+
+    if (this.isLoginMode) {
+      // En modo LOGIN, hacemos los campos de registro opcionales
+      nombreControl?.clearValidators();
+      telefonoControl?.clearValidators();
+    } else {
+      // En modo REGISTRO, hacemos los campos de registro obligatorios
+      nombreControl?.setValidators(Validators.required);
+      telefonoControl?.setValidators([Validators.required, Validators.pattern('^[0-9]{9}$')]);
+    }
+    
+    // Forzamos la actualización del estado del formulario
+    nombreControl?.updateValueAndValidity();
+    telefonoControl?.updateValueAndValidity();
+    
+    // Siempre validamos email y password
+    this.authForm.get('email')?.setValidators([Validators.required, Validators.email]);
+    this.authForm.get('password')?.setValidators([Validators.required, Validators.minLength(6)]);
+    this.authForm.updateValueAndValidity();
   }
   
   /**
@@ -42,40 +73,39 @@ export class LoginComponent {
    */
   public toggleMode(): void {
     this.isLoginMode = !this.isLoginMode;
-    // Opcional: limpiar el formulario al cambiar de modo
     this.authForm.reset(); 
     this.errorMessage = '';
+    // Llama a setValidators cada vez que cambia el modo
+    this.setValidators(); 
   }
 
   /**
    * Maneja el envío del formulario, llamando a login o register según el modo.
    */
   public async onSubmit(): Promise<void> {
-    this.errorMessage = ''; // Limpiar errores previos
+    this.errorMessage = ''; 
     
+    // Verificamos si el formulario es inválido con los validadores actuales
     if (this.authForm.invalid) {
-        this.errorMessage = 'Por favor, introduce un correo válido y una contraseña de al menos 6 caracteres.';
+        this.errorMessage = 'Por favor, rellena todos los campos requeridos correctamente.';
         return;
     } 
     
-    const { email, password } = this.authForm.value;
+    const { email, password, nombre, telefono } = this.authForm.value;
     
     try {
         if (this.isLoginMode) {
             // Modo Login
             await this.authService.login(email, password);
-            console.log("Login exitoso. Redirigiendo.");
         } else {
-            // Modo Registro
-            await this.authService.register(email, password);
-            console.log("Registro exitoso. Redirigiendo.");
+            // Modo Registro: Pasamos nombre y telefono
+            await this.authService.register(email, password, nombre, telefono);
         }
         
         // Si el login/registro es exitoso, redirige a la página principal
         this.router.navigate(['/']); 
         
     } catch (error) {
-        // Captura el error lanzado por el AuthService
         this.errorMessage = (error as Error).message;
     }
   }

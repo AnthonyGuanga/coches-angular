@@ -3,16 +3,38 @@
         <!-- Título que cambia según el modo -->
         <h2 class="title">{{ isLoginMode ? 'Iniciar Sesión' : 'Registrarse' }}</h2>
         <p class="subtitle">
-            {{ isLoginMode ? 'Accede para gestionar tus reservas.' : 'Crea una cuenta nueva rápidamente.' }}
+            {{ isLoginMode ? 'Accede para gestionar tus reservas.' : 'Crea una cuenta nueva rápidamente y completa tu perfil.' }}
         </p>
 
         <!-- Enlazamos el formulario reactivo -->
         <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
             
+            <!-- CAMPOS DE REGISTRO (SOLO VISIBLES EN MODO REGISTRO) -->
+            <div *ngIf="!isLoginMode">
+                
+                <!-- Campo de Nombre -->
+                <div class="input-group">
+                    <label for="nombre">Elige un nombre de usuario</label>
+                    <input type="text" id="nombre" formControlName="nombre" placeholder="Tu nombre">
+                    <div *ngIf="authForm.get('nombre')?.invalid && (authForm.get('nombre')?.dirty || authForm.get('nombre')?.touched)" class="error-message">
+                        <span *ngIf="authForm.get('nombre')?.errors?.['required']">El nombre es obligatorio para el registro.</span>
+                    </div>
+                </div>
+
+                <!-- Campo de Teléfono -->
+                <div class="input-group">
+                    <label for="telefono">Teléfono (9 dígitos)</label>
+                    <input type="tel" id="telefono" formControlName="telefono" placeholder="Ej: 600123456">
+                    <div *ngIf="authForm.get('telefono')?.invalid && (authForm.get('telefono')?.dirty || authForm.get('telefono')?.touched)" class="error-message">
+                        <span *ngIf="authForm.get('telefono')?.errors?.['required']">El teléfono es obligatorio.</span>
+                        <span *ngIf="authForm.get('telefono')?.errors?.['pattern']">Introduce un teléfono de 9 dígitos.</span>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Campo de Email -->
             <div class="input-group">
                 <label for="email">Correo Electrónico</label>
-                <!-- Enlazamos al control 'email' -->
                 <input type="email" id="email" formControlName="email" placeholder="ejemplo@correo.com">
                 <div *ngIf="authForm.get('email')?.invalid && (authForm.get('email')?.dirty || authForm.get('email')?.touched)" class="error-message">
                     <span *ngIf="authForm.get('email')?.errors?.['required']">El correo es obligatorio.</span>
@@ -23,7 +45,6 @@
             <!-- Campo de Contraseña -->
             <div class="input-group">
                 <label for="password">Contraseña</label>
-                <!-- Enlazamos al control 'password' -->
                 <input type="password" id="password" formControlName="password" placeholder="Mínimo 6 caracteres">
                 <div *ngIf="authForm.get('password')?.invalid && (authForm.get('password')?.dirty || authForm.get('password')?.touched)" class="error-message">
                     <span *ngIf="authForm.get('password')?.errors?.['required']">La contraseña es obligatoria.</span>
