@@ -7,6 +7,8 @@ import {
   DocumentData,
   doc,
   docData,
+  query, // 👈 Nuevo
+  where, // 👈 Nuevo
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
@@ -22,15 +24,16 @@ export interface Coche {
   nombreImagen?: string;
   precio?: number;
   fotoPrincipal?: string;
+  fotos?: string[]; // Array de URLs de fotos
 
-  fotos?: string[];
+  // 👇 IMPORTANTE: Ahora es un array de strings (ej: ['suv', 'sedan'])
+  tipo?: string[];
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class CochesService {
-  // usar inject() → recomendado por Angular & AngularFire
   private firestore = inject(Firestore);
 
   private cochesCollection: CollectionReference<DocumentData> = collection(
@@ -38,11 +41,26 @@ export class CochesService {
     'coches'
   );
 
-  /** 🔹 OBTENER TODOS LOS COCHES */
-  public getCoches(): Observable<Coche[]> {
-    return collectionData(this.cochesCollection, {
-      idField: 'id',
-    }) as Observable<Coche[]>;
+  /** * 🔹 OBTENER COCHES (Con filtro opcional)
+   * Si pasas un tipo (ej: 'SUV'), filtra. Si no, trae todos.
+   */
+  public getCoches(tipoFiltrado?: string | null): Observable<Coche[]> {
+    const colRef = this.cochesCollection;
+
+    let q;
+
+    if (tipoFiltrado) {
+      // Normalizamos a minúsculas para asegurar coincidencia
+      const valorBusqueda = tipoFiltrado.toLowerCase().trim();
+
+      // Usamos 'array-contains' porque en la BD 'tipo' es una lista: ['suv', 'hatchback']
+      q = query(colRef, where('tipo', 'array-contains', valorBusqueda));
+    } else {
+      // Sin filtro, traemos toda la colección
+      q = query(colRef);
+    }
+
+    return collectionData(q, { idField: 'id' }) as Observable<Coche[]>;
   }
 
   /** 🔹 OBTENER UN SOLO COCHE POR ID */
@@ -51,7 +69,7 @@ export class CochesService {
     return docData(ref, { idField: 'id' }) as Observable<Coche>;
   }
 
-  /** 🔹 OBTENER FOTOS DE LA SUBCOLECCIÓN */
+  /** 🔹 OBTENER FOTOS DE LA SUBCOLECCIÓN (Si la usas) */
   public getFotosCoche(id: string): Observable<any[]> {
     const ref = collection(this.firestore, `coches/${id}/fotos`);
     return collectionData(ref, { idField: 'id' }) as Observable<any[]>;

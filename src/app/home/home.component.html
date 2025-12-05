@@ -2,26 +2,15 @@
   <h1>¡Bienvenido a Mi App!</h1>
   <app-carousel [slides]="bannerImages"></app-carousel>
 
-  <!-- //////////////////////////////////////////-->
   <section class="car-selector">
     <h1 class="title">Elige tu tipo de coche</h1>
 
     <div class="grid-cars">
-      <div class="card">
-        <div class="icon">
-          <svg viewBox="0 0 120 60">
-            <g fill="#222">
-              <rect x="8" y="22" width="88" height="18" rx="6" />
-              <path d="M18 22 q6 -12 22 -12 h18 q10 0 22 12 v6 h-62z" />
-              <circle cx="30" cy="46" r="6" />
-              <circle cx="78" cy="46" r="6" />
-            </g>
-          </svg>
-        </div>
-        <p>Turismo</p>
-      </div>
-
-      <div class="card">
+      <div
+        class="card"
+        (click)="filtrarPorTipo('SUV')"
+        [class.active]="categoriaSeleccionada === 'SUV'"
+      >
         <div class="icon">
           <svg viewBox="0 0 120 60">
             <g fill="#222">
@@ -32,10 +21,14 @@
             </g>
           </svg>
         </div>
-        <p>SUV y 4x4</p>
+        <p>SUV</p>
       </div>
 
-      <div class="card">
+      <div
+        class="card"
+        (click)="filtrarPorTipo('monovolumen')"
+        [class.active]="categoriaSeleccionada === 'monovolumen'"
+      >
         <div class="icon">
           <svg viewBox="0 0 120 60">
             <g fill="#222">
@@ -46,10 +39,14 @@
             </g>
           </svg>
         </div>
-        <p>Monovolumen</p>
+        <p>monovolumen</p>
       </div>
 
-      <div class="card">
+      <div
+        class="card"
+        (click)="filtrarPorTipo('familiar')"
+        [class.active]="categoriaSeleccionada === 'familiar'"
+      >
         <div class="icon">
           <svg viewBox="0 0 120 60">
             <g fill="#222">
@@ -60,10 +57,14 @@
             </g>
           </svg>
         </div>
-        <p>Familiar</p>
+        <p>familiar</p>
       </div>
 
-      <div class="card">
+      <div
+        class="card"
+        (click)="filtrarPorTipo('hatchback')"
+        [class.active]="categoriaSeleccionada === 'hatchback'"
+      >
         <div class="icon">
           <svg viewBox="0 0 120 60">
             <g fill="#222">
@@ -73,10 +74,14 @@
             </g>
           </svg>
         </div>
-        <p>Deportivo</p>
+        <p>hatchback</p>
       </div>
 
-      <div class="card">
+      <div
+        class="card"
+        (click)="filtrarPorTipo('coupé')"
+        [class.active]="categoriaSeleccionada === 'coupé'"
+      >
         <div class="icon">
           <svg viewBox="0 0 120 60">
             <g fill="#222">
@@ -87,10 +92,14 @@
             </g>
           </svg>
         </div>
-        <p>Cabrio</p>
+        <p>Coupé</p>
       </div>
 
-      <div class="card">
+      <div
+        class="card"
+        (click)="filtrarPorTipo('furgoneta')"
+        [class.active]="categoriaSeleccionada === 'furgoneta'"
+      >
         <div class="icon">
           <svg viewBox="0 0 120 60">
             <g fill="#222">
@@ -104,7 +113,11 @@
         <p>Furgoneta</p>
       </div>
 
-      <div class="card">
+      <div
+        class="card"
+        (click)="filtrarPorTipo('sedán')"
+        [class.active]="categoriaSeleccionada === 'sedán'"
+      >
         <div class="icon">
           <svg viewBox="0 0 120 60">
             <g fill="#222">
@@ -115,26 +128,24 @@
             </g>
           </svg>
         </div>
-        <p>Compacto</p>
+        <p>Sedan</p>
       </div>
     </div>
   </section>
-
-  <!-- //////////////////////////////////////////-->
-
-  <!-- Sección del anuncio cargado desde Firestore -->
   <h2 style="margin-top: 30px; border-bottom: 2px solid #3b82f6; padding-bottom: 10px">
-    Anuncios Destacados de Firestore
+    Anuncios Destacados @if (categoriaSeleccionada) {
+    <span style="color: #3b82f6; font-size: 0.8em"> (Mostrando: {{ categoriaSeleccionada }}) </span>
+    } @else {
+    <span style="color: #666; font-size: 0.8em"> (Todos) </span>
+    }
   </h2>
-  <!-- 
-      Usamos el pipe 'async' para suscribirnos a coches$ y obtener los datos.
-      La variable local 'coches' tendrá la lista de documentos.
-    -->
-  <div class="anuncios-grid" *ngIf="coches$ | async as coches">
-    <!-- Recorremos la lista de coches (el *ngFor) -->
+
+  @if (coches$ | async; as coches) {
+
+  <div class="anuncios-grid">
+    @for (coche of coches; track coche.id) {
     <div
       class="anuncio"
-      *ngFor="let coche of coches"
       style="
         border: 1px solid #ccc;
         padding: 15px;
@@ -145,18 +156,30 @@
       "
     >
       <h3>{{ coche.marca }} {{ coche.modelo }}</h3>
-      <!-- El pipe currency formatea el número como moneda EUR -->
+
       <p style="font-weight: bold; color: #10b981">
         Precio: {{ coche.precio | currency : 'EUR' : 'symbol' : '1.0-0' }}
       </p>
+
       <p>
-        <small style="color: #6b7280">ID de Firestore: {{ coche.id }}</small>
+        <small style="color: #6b7280">ID: {{ coche.id }}</small>
       </p>
     </div>
-
-    <!-- Mensaje si la base de datos está vacía (aunque la conexión funcione) -->
-    <div *ngIf="coches.length === 0">
-      <p>No se encontraron anuncios de coches en la base de datos.</p>
+    } @empty {
+    <div style="padding: 20px; text-align: center; width: 100%">
+      <p>
+        No se encontraron anuncios de tipo <strong>{{ categoriaSeleccionada }}</strong
+        >.
+      </p>
+      <button
+        (click)="filtrarPorTipo(categoriaSeleccionada!)"
+        style="padding: 5px 10px; cursor: pointer"
+      >
+        Quitar filtros
+      </button>
     </div>
+    }
   </div>
+
+  }
 </main>
