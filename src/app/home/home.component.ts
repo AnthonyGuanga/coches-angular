@@ -15,6 +15,7 @@ import { CarTypeCardComponent } from '../components/car-type-card/car-type-card.
 export class HomeComponent implements OnInit {
   coches$!: Observable<Coche[]>;
   categoriaSeleccionada: (typeof this.tiposCoche[number]['id']) | null = null;
+  carouselSlides: { img: string; title?: string }[] = [];
 
 
   tiposCoche = [
@@ -26,6 +27,7 @@ export class HomeComponent implements OnInit {
     { id: 'sedán', label: 'sedán', icon: 'sedán' },
   ];
 
+
   filtrarPorTipo(tipo: string) {
     if (this.categoriaSeleccionada === tipo) {
       this.categoriaSeleccionada = null;
@@ -36,44 +38,36 @@ export class HomeComponent implements OnInit {
     this.cargarCoches();
   }
 
-  bannerImages = [
-    {
-      img: 'https://mlin.es/wp-content/uploads/2024/08/marcas-de-coches-de-lujo-poco-conocidas-1024x626.jpg',
-      title: '1',
-    },
-    {
-      img: 'https://mlin.es/wp-content/uploads/2024/08/Marcas-raras-de-coches-pagani-1024x576.webp',
-      title: '2',
-    },
-    {
-      img: 'https://mlin.es/wp-content/uploads/2024/08/Koenigsegg-super-marca-de-lujo-de-coches.jpg',
-      title: '3',
-    },
-  ];
-
   constructor(private cochesService: CochesService) {
     // Ya no necesitamos inyectar Firestore aquí, el servicio se encarga.
   }
 
   ngOnInit(): void {
     this.cargarCoches();
+    this.cargarCarrusel(); // 👈 NUEVO
   }
 
-  // 1. Función que recibe el click desde el HTML
-  // filtrarPorTipo(tipo: string) {
-  //   // Toggle: Si pulso el mismo que ya está activo, lo desactivo (null)
-  //   if (this.categoriaSeleccionada === tipo) {
-  //     this.categoriaSeleccionada = null;
-  //   } else {
-  //     this.categoriaSeleccionada = tipo;
-  //   }
-
-  //   // Volvemos a pedir los datos al servicio con el nuevo filtro
-  //   this.cargarCoches();
-  // }
-
-  // 2. Lógica simplificada: El servicio hace todo el trabajo sucio
   cargarCoches() {
     this.coches$ = this.cochesService.getCoches(this.categoriaSeleccionada);
+  }
+  cargarCarrusel() {
+    this.cochesService.getCoches(null).subscribe(coches => {
+
+      const slides = coches
+        .filter(c => !!c.fotoPrincipal)
+        .map(coche => ({
+          img: coche.fotoPrincipal!,
+          title: `${coche.marca ?? ''} ${coche.modelo ?? ''}`.trim()
+        }));
+
+      this.carouselSlides = this.shuffle(slides).slice(0, 3);
+    });
+  }
+
+  private shuffle<T>(array: T[]): T[] {
+    return array
+      .map(v => ({ v, r: Math.random() }))
+      .sort((a, b) => a.r - b.r)
+      .map(({ v }) => v);
   }
 }

@@ -20,5 +20,5 @@ register();
 
 export class CarouselComponent {
   // Aquí está la magia: @Input permite recibir datos desde fuera
-  @Input() slides: any[] = [];
+  @Input() slides: { img: string; title?: string }[] = [];
 }

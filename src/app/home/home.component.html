@@ -1,7 +1,8 @@
 <main class="home-container">
   <h1>¡Bienvenido a Mi App!</h1>
 
-  <app-carousel [slides]="bannerImages"></app-carousel>
+  <app-carousel [slides]="carouselSlides"></app-carousel>
+
 
   <div class="grid-cars">
     @for (tipo of tiposCoche; track tipo.id) {
