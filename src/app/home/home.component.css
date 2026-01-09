@@ -1,227 +1,227 @@
+/* =========================================
+   CONTENEDOR PRINCIPAL
+   ========================================= */
 .home-container {
-  /* Le damos un alto mínimo para que el footer no se suba */
-
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 40px;
-  text-align: center;
+  width: 100%;
+  max-width: 1200px;
+  /* Ancho máximo estándar */
+  margin: 0 auto;
+  padding: 0 1rem 40px 1rem;
+  /* Padding lateral y abajo */
 }
 
-button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  color: white;
-  background-color: #007bff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-/*///////////////////////////////////////////////////////////*/
-/* --- Reemplaza/añade esto --- */
-
-/* Ajustes del grid (opcional: conserva el tuyo) */
+/* =========================================
+   GRID DE TIPOS DE COCHE (ICONOS)
+   ========================================= */
 .grid-cars {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 20px;
-  align-items: start; /* evita que el contenido vertical se centre y deforme */
+  /* SEPARACIÓN DEL CARRUSEL */
+  margin-top: 4rem;
+  /* <--- AQUÍ ESTÁ LA CLAVE (aprox 64px) */
+  margin-bottom: 3rem;
+  /* Separación del título de abajo */
+
+  display: flex;
+  /* Flex es mejor que Grid aquí para centrar */
+  flex-wrap: wrap;
+  /* Si no caben, bajan de línea */
+  justify-content: center;
+  gap: 1.5rem;
+  /* Espacio entre tarjetas */
+  width: 100%;
 }
 
-/* Tarjeta */
+/* --- TARJETA DE TIPO (Diseño Chulo) --- */
 .card {
-  padding: 14px 10px;
-  height: 130px;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  border-radius: 10px;
-  transition: all 0.25s ease;
+  justify-content: center;
+
+  width: 130px;
+  /* Ancho fijo para uniformidad */
+  height: 110px;
+  /* Alto fijo */
+  padding: 10px;
+
+  background: white;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  /* Borde invisible listo para el hover */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  /* Sombra suave */
+
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   cursor: pointer;
+  user-select: none;
 }
 
-/* HOVER */
+/* HOVER: Se levanta y sombrea */
 .card:hover {
-  background: #f3f3f3; /* fondo gris suave */
-  transform: translateY(-4px); /* levantar ligero */
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: #e2e8f0;
 }
 
-/* Cambio suave del icono en hover */
-.card:hover .icon svg {
-  transform: scale(1.04) scaleY(0.9); /* un pelín más grande y manteniendo aplastado */
-  transition: transform 0.25s ease;
+/* --- ESTADO ACTIVO (Cuando se selecciona) --- */
+.card.active {
+  background-color: #eff6ff;
+  /* Fondo azul muy claro */
+  border-color: #3b82f6;
+  /* Borde azul intenso */
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 }
 
-/* Texto en hover */
-.card:hover p {
-  color: #000;
-  font-weight: 600;
+.card.active p {
+  color: #1d4ed8;
+  font-weight: 700;
 }
 
-/* Área del icono: más ancha que alta = RECTÁNGULO */
-/* Rectángulo más estrecho */
+.card.active .icon svg {
+  fill: #2563eb;
+  /* El coche se pone azul */
+}
+
+/* --- ICONO (SVG) --- */
 .icon {
-  width: 110px; /* antes 140px → ahora más estrecho */
-  height: 52px; /* ligeramente más alto para compensar */
+  width: 60px;
+  height: 40px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  margin-bottom: 8px;
 }
 
-/* Aplanado más suave del SVG */
 .icon svg {
   width: 100%;
   height: 100%;
-  display: block;
-  transform-origin: center;
-  transform: scaleY(0.88); /* antes 0.78 → menos aplastado */
+  fill: #64748b;
+  /* Gris azulado moderno por defecto */
+  transition: fill 0.3s ease, transform 0.3s ease;
+
+  /* He quitado el transform: scaleY(...) para que no se vean aplastados */
 }
 
-/* Si algún SVG queda muy centrado arriba/abajo, ajusta su posición con translateY */
-.icon svg.adjust-down {
-  transform: scaleY(0.78) translateY(4%);
-}
-.icon svg.adjust-up {
-  transform: scaleY(0.78) translateY(-4%);
-}
-
-/* Texto */
+/* Texto de la etiqueta */
 .card p {
   margin: 0;
-  font-size: 15px;
-  line-height: 1;
-  color: #222;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #475569;
+  text-align: center;
 }
 
-/* Responsive: reducir ancho del rectángulo en pantallas pequeñas */
-@media (max-width: 900px) {
-  .icon {
-    width: 110px;
-    height: 48px;
-  }
-  .grid-cars {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-@media (max-width: 700px) {
-  .icon {
-    width: 95px;
-    height: 44px;
-  }
-  .grid-cars {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
 /* =========================================
-   CONTENEDOR DEL GRID (LA MAQUETACIÓN)
+   GRID DE ANUNCIOS (RESULTADOS)
    ========================================= */
 .anuncios-grid {
   display: grid;
-
-  /* 👇 LA MAGIA DEL GRID RESPONSIVE:
-     - auto-fill: Crea tantas columnas como quepan en la pantalla.
-     - minmax(300px, 1fr): Cada tarjeta medirá mínimo 300px. 
-       Si sobra espacio, se estira (1fr) para llenar el hueco. 
-  */
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-
-  gap: 2rem; /* Espacio entre tarjetas (horizontal y vertical) */
-  margin-top: 2rem;
+  /* Grid responsive mágico: */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
   width: 100%;
+  margin-top: 1rem;
 }
 
-/* =========================================
-   ESTILO DE LA TARJETA (PARA QUE SE VEA BIEN EN EL GRID)
-   ========================================= */
+/* --- TARJETA DE ANUNCIO (Coche real) --- */
 .anuncio {
   background: white;
-  border-radius: var(--radius);
+  border-radius: 12px;
   border: 1px solid #e2e8f0;
-  box-shadow: var(--shadow);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  transition: all 0.3s ease;
-
-  /* 👇 Importante para que la tarjeta ocupe toda la altura de la fila del grid */
   display: flex;
   flex-direction: column;
-  height: 100%;
-
-  animation: fadeIn 0.6s ease-out forwards;
+  transition: all 0.3s ease;
 }
 
 .anuncio:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
-  border-color: var(--primary);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  border-color: #bfdbfe;
+  /* Borde azulito al pasar ratón */
 }
 
-/* --- IMAGEN --- */
 .anuncio-imagen-wrapper {
   width: 100%;
-  height: 220px; /* Altura fija de la foto */
-  background-color: #f1f5f9;
+  height: 200px;
+  background-color: #f8fafc;
   overflow: hidden;
-  position: relative;
 }
 
 .anuncio-img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Recorta la imagen para que llene el hueco */
+  object-fit: cover;
   transition: transform 0.5s ease;
 }
 
 .anuncio:hover .anuncio-img {
-  transform: scale(1.1); /* Zoom al pasar el ratón */
+  transform: scale(1.05);
+  /* Zoom suave a la foto */
 }
 
-/* --- CONTENIDO --- */
 .anuncio-content {
-  padding: 1.5rem;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
-  flex-grow: 1; /* Hace que este div ocupe todo el espacio sobrante */
+  flex-grow: 1;
 }
 
 .anuncio h3 {
-  font-size: 1.4rem;
-  font-weight: 800;
+  font-size: 1.2rem;
+  font-weight: 700;
   margin: 0 0 0.5rem 0;
-  color: var(--dark);
-  text-transform: uppercase;
-  line-height: 1.2;
+  color: #1e293b;
 }
 
 .anuncio-detalles {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #64748b;
   margin-bottom: 1rem;
-  font-weight: 500;
 }
 
 .anuncio-precio {
-  font-size: 1.8rem;
-  font-weight: 900;
-  color: var(--primary);
-  margin-top: auto; /* 👇 EMPUJA EL PRECIO AL FINAL DE LA TARJETA SIEMPRE */
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #2563eb;
+  /* Azul primario */
+  margin-top: auto;
   text-align: right;
-  letter-spacing: -1px;
 }
 
-.anuncio-id {
-  font-size: 0.75rem;
-  color: #94a3b8;
-  margin-top: 10px;
-  border-top: 1px solid #f1f5f9;
-  padding-top: 8px;
+/* =========================================
+   TITULO DE SECCIÓN
+   ========================================= */
+.category-header {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+/* =========================================
+   MEDIA QUERIES (Móvil)
+   ========================================= */
+@media (max-width: 768px) {
+  .grid-cars {
+    /* En móvil, hacemos scroll horizontal para los iconos */
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    margin-top: 2rem;
+    /* Menos margen en móvil */
+  }
+
+  .card {
+    min-width: 110px;
+    /* Para que no se encojan */
+  }
+
+  .home-container {
+    padding: 0 15px 40px 15px;
+  }
 }

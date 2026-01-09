@@ -4,17 +4,37 @@ import { RouterModule } from '@angular/router';
 import { CarouselComponent } from '../components/carousel/carousel.component';
 import { CochesService, Coche } from '../services/coches.service';
 import { Observable } from 'rxjs';
-
+import { CarTypeCardComponent } from '../components/car-type-card/car-type-card.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CarouselComponent, CommonModule, RouterModule],
+  imports: [CarouselComponent, CommonModule, RouterModule, CarTypeCardComponent],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
   coches$!: Observable<Coche[]>;
-  categoriaSeleccionada: string | null = null; // Variable para saber qué filtro está activo
+  categoriaSeleccionada: (typeof this.tiposCoche[number]['id']) | null = null;
+
+
+  tiposCoche = [
+    { id: 'SUV', label: 'SUV', icon: 'suv' },
+    { id: 'monovolumen', label: 'Monovolumen', icon: 'monovolumen' },
+    { id: 'familiar', label: 'Familiar', icon: 'familiar' },
+    { id: 'coupé', label: 'coupé', icon: 'coupé' },
+    { id: 'furgoneta', label: 'furgoneta', icon: 'furgoneta' },
+    { id: 'sedán', label: 'sedán', icon: 'sedán' },
+  ];
+
+  filtrarPorTipo(tipo: string) {
+    if (this.categoriaSeleccionada === tipo) {
+      this.categoriaSeleccionada = null;
+    } else {
+      this.categoriaSeleccionada = tipo;
+    }
+
+    this.cargarCoches();
+  }
 
   bannerImages = [
     {
@@ -40,17 +60,17 @@ export class HomeComponent implements OnInit {
   }
 
   // 1. Función que recibe el click desde el HTML
-  filtrarPorTipo(tipo: string) {
-    // Toggle: Si pulso el mismo que ya está activo, lo desactivo (null)
-    if (this.categoriaSeleccionada === tipo) {
-      this.categoriaSeleccionada = null;
-    } else {
-      this.categoriaSeleccionada = tipo;
-    }
+  // filtrarPorTipo(tipo: string) {
+  //   // Toggle: Si pulso el mismo que ya está activo, lo desactivo (null)
+  //   if (this.categoriaSeleccionada === tipo) {
+  //     this.categoriaSeleccionada = null;
+  //   } else {
+  //     this.categoriaSeleccionada = tipo;
+  //   }
 
-    // Volvemos a pedir los datos al servicio con el nuevo filtro
-    this.cargarCoches();
-  }
+  //   // Volvemos a pedir los datos al servicio con el nuevo filtro
+  //   this.cargarCoches();
+  // }
 
   // 2. Lógica simplificada: El servicio hace todo el trabajo sucio
   cargarCoches() {

@@ -1,0 +1,87 @@
+/* Contenedor principal de la tarjeta */
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 140px;
+    /* Ajusta según necesidad */
+    padding: 1.5rem 1rem;
+    background: white;
+    border-radius: 16px;
+
+    /* Sombra suave inicial */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 2px solid transparent;
+
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    user-select: none;
+}
+
+/* Efecto Hover: La tarjeta se levanta un poco */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    border-color: #e2e8f0;
+}
+
+/* Contenedor del Icono */
+.icon-container {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Fondo circular sutil */
+    background: #f1f5f9;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilo del SVG */
+.icon-container svg {
+    width: 36px;
+    height: 36px;
+    fill: #64748b;
+    /* Color gris azulado moderno */
+    transition: fill 0.3s ease;
+}
+
+/* Texto */
+.label {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #334155;
+    text-transform: capitalize;
+}
+
+/* --- ESTADO ACTIVO (Seleccionado) --- */
+
+.card.active {
+    background-color: #eff6ff;
+    /* Azul muy clarito */
+    border-color: #3b82f6;
+    /* Azul vibrante */
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.25);
+}
+
+.card.active .icon-container {
+    background-color: #3b82f6;
+    /* El círculo se vuelve azul */
+}
+
+.card.active .icon-container svg {
+    fill: white;
+    /* El icono se vuelve blanco */
+}
+
+.card.active .label {
+    color: #1d4ed8;
+}

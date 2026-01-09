@@ -1,170 +1,42 @@
 <main class="home-container">
   <h1>¡Bienvenido a Mi App!</h1>
+
   <app-carousel [slides]="bannerImages"></app-carousel>
 
-  <section class="car-selector">
-    <h1 class="title">Elige tu tipo de coche</h1>
-
-    <div class="grid-cars">
-      <div
-        class="card"
-        (click)="filtrarPorTipo('SUV')"
-        [class.active]="categoriaSeleccionada === 'SUV'"
-      >
-        <div class="icon">
-          <svg viewBox="0 0 120 60">
-            <g fill="#222">
-              <rect x="6" y="18" width="98" height="24" rx="5" />
-              <rect x="22" y="6" width="46" height="20" rx="4" />
-              <circle cx="30" cy="46" r="6" />
-              <circle cx="86" cy="46" r="6" />
-            </g>
-          </svg>
-        </div>
-        <p>SUV</p>
-      </div>
-
-      <div
-        class="card"
-        (click)="filtrarPorTipo('monovolumen')"
-        [class.active]="categoriaSeleccionada === 'monovolumen'"
-      >
-        <div class="icon">
-          <svg viewBox="0 0 120 60">
-            <g fill="#222">
-              <rect x="6" y="18" width="100" height="22" rx="6" />
-              <rect x="30" y="6" width="50" height="20" rx="6" />
-              <circle cx="34" cy="46" r="5" />
-              <circle cx="84" cy="46" r="5" />
-            </g>
-          </svg>
-        </div>
-        <p>Monovolumen</p>
-      </div>
-
-      <div
-        class="card"
-        (click)="filtrarPorTipo('familiar')"
-        [class.active]="categoriaSeleccionada === 'familiar'"
-      >
-        <div class="icon">
-          <svg viewBox="0 0 120 60">
-            <g fill="#222">
-              <rect x="8" y="20" width="86" height="20" rx="5" />
-              <path d="M22 20 q12 -14 34 -14 q14 0 26 12 v6 h-60z" />
-              <circle cx="32" cy="46" r="6" />
-              <circle cx="76" cy="46" r="6" />
-            </g>
-          </svg>
-        </div>
-        <p>Familiar</p>
-      </div>
-
-      <div
-        class="card"
-        (click)="filtrarPorTipo('hatchback')"
-        [class.active]="categoriaSeleccionada === 'hatchback'"
-      >
-        <div class="icon">
-          <svg viewBox="0 0 120 60">
-            <g fill="#222">
-              <path d="M10 34 q18 -18 46 -18 q16 0 28 12 q-2 6 -10 8 q-10 3 -20 3 q-16 0 -30 -5z" />
-              <circle cx="36" cy="46" r="6" />
-              <circle cx="84" cy="46" r="6" />
-            </g>
-          </svg>
-        </div>
-        <p>Hatchback</p>
-      </div>
-
-      <div
-        class="card"
-        (click)="filtrarPorTipo('coupé')"
-        [class.active]="categoriaSeleccionada === 'coupé'"
-      >
-        <div class="icon">
-          <svg viewBox="0 0 120 60">
-            <g fill="#222">
-              <path d="M10 30 q18 -14 46 -14 q20 0 28 8 v6 h-70z" />
-              <rect x="18" y="34" width="76" height="6" rx="3" />
-              <circle cx="34" cy="46" r="6" />
-              <circle cx="86" cy="46" r="6" />
-            </g>
-          </svg>
-        </div>
-        <p>Coupé</p>
-      </div>
-
-      <div
-        class="card"
-        (click)="filtrarPorTipo('furgoneta')"
-        [class.active]="categoriaSeleccionada === 'furgoneta'"
-      >
-        <div class="icon">
-          <svg viewBox="0 0 120 60">
-            <g fill="#222">
-              <rect x="6" y="14" width="92" height="30" rx="4" />
-              <rect x="66" y="8" width="26" height="18" rx="2" />
-              <circle cx="30" cy="46" r="6" />
-              <circle cx="78" cy="46" r="6" />
-            </g>
-          </svg>
-        </div>
-        <p>Furgoneta</p>
-      </div>
-
-      <div
-        class="card"
-        (click)="filtrarPorTipo('sedán')"
-        [class.active]="categoriaSeleccionada === 'sedán'"
-      >
-        <div class="icon">
-          <svg viewBox="0 0 120 60">
-            <g fill="#222">
-              <rect x="10" y="20" width="70" height="18" rx="6" />
-              <path d="M18 20 q8 -10 30 -10 q18 0 22 8 v6 h-60z" />
-              <circle cx="30" cy="46" r="6" />
-              <circle cx="70" cy="46" r="6" />
-            </g>
-          </svg>
-        </div>
-        <p>Sedán</p>
-      </div>
-    </div>
-  </section>
-
-  <h2 style="margin-top: 30px; border-bottom: 2px solid #3b82f6; padding-bottom: 10px">
-    Anuncios Destacados @if (categoriaSeleccionada) {
-    <span style="color: #3b82f6; font-size: 0.8em"> (Mostrando: {{ categoriaSeleccionada }}) </span>
-    } @else {
-    <span style="color: #666; font-size: 0.8em"> (Todos) </span>
+  <div class="grid-cars">
+    @for (tipo of tiposCoche; track tipo.id) {
+    <app-car-type-card [tipo]="tipo" [active]="categoriaSeleccionada === tipo.id" (selected)="filtrarPorTipo($event)">
+    </app-car-type-card>
     }
-  </h2>
+  </div>
+
+  <div class="category-header">
+    <h2 class="section-title">
+      Anuncios Destacados
+      @if (categoriaSeleccionada) {
+      <span class="highlight"> (Mostrando: {{ categoriaSeleccionada }}) </span>
+      } @else {
+      <span class="subtitle"> (Todos) </span>
+      }
+    </h2>
+  </div>
 
   @if (coches$ | async; as coches) {
-
   <div class="anuncios-grid">
     @for (coche of coches; track coche.id) {
-
     <div class="anuncio">
       <div class="anuncio-imagen-wrapper">
-        <img
-          [src]="coche.fotoPrincipal"
-          alt="{{ coche.marca }}"
-          class="anuncio-img"
-          onerror="this.src='https://via.placeholder.com/300x200?text=Sin+Foto'"
-        />
+        <img [src]="coche.fotoPrincipal" alt="{{ coche.marca }}" class="anuncio-img"
+          onerror="this.src='https://via.placeholder.com/300x200?text=Sin+Foto'" />
       </div>
 
       <div class="anuncio-content">
         <h3>
           {{ coche.marca }} <span style="color: #2563eb">{{ coche.modelo }}</span>
         </h3>
-
         <p class="anuncio-detalles">
           {{ coche.anio }} • {{ coche.combustible }} • {{ coche.cambio }}
         </p>
-
         <span class="anuncio-precio">
           {{ coche.precio | currency : 'EUR' : 'symbol' : '1.0-0' }}
         </span>
@@ -175,18 +47,7 @@
       <p style="font-size: 1.2rem; color: #64748b">
         No hay coches disponibles para <strong>{{ categoriaSeleccionada }}</strong>
       </p>
-      <button
-        (click)="filtrarPorTipo(categoriaSeleccionada!)"
-        style="
-          padding: 10px 20px;
-          background: #2563eb;
-          color: white;
-          border: none;
-          border-radius: 8px;
-          cursor: pointer;
-          margin-top: 10px;
-        "
-      >
+      <button (click)="filtrarPorTipo(categoriaSeleccionada!)" class="btn-reset">
         Ver todos los coches
       </button>
     </div>
