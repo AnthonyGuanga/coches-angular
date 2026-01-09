@@ -1,25 +1,66 @@
-<div class="grid-container">
-  @for (coche of coches$ | async; track coche.id) {
-  <div class="car-card">
-    <div class="card-image">
-      <img [src]="coche.fotoPrincipal" [alt]="coche.modelo" />
-      <span class="badge">{{ coche.marca }}</span>
-    </div>
+<div class="main-container">
 
-    <div class="card-content">
-      <h3>{{ coche.modelo }}</h3>
+  <aside class="filters-sidebar">
+    <h3>Filtros</h3>
 
-      <p class="specs">Disponible ahora</p>
+    <form [formGroup]="filterForm">
 
-      <div class="card-footer">
-        <div class="price">
-          {{ coche.precio | currency : 'EUR' : 'symbol' : '1.0-0' }}
+      <div class="form-group">
+        <label>Buscar</label>
+        <input type="text" formControlName="busqueda" placeholder="Marca o modelo..." class="input-control">
+      </div>
+
+      <div class="form-group">
+        <label>Tipo de vehículo</label>
+        <select formControlName="tipo" class="input-control">
+          <option value="">Todos</option>
+          <option value="suv">SUV</option>
+          <option value="sedan">Sedán</option>
+          <option value="hatchback">Hatchback</option>
+          <option value="hibrido">Híbrido</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>
+          Precio máx:
+          <strong>{{ filterForm.get('precioMax')?.value | currency:'EUR':'symbol':'1.0-0' }}</strong>
+        </label>
+        <input type="range" formControlName="precioMax" min="0" max="60000" step="1000" class="range-control">
+      </div>
+
+    </form>
+  </aside>
+
+  <div class="grid-container">
+    @for (coche of filteredCoches$ | async; track coche.id) {
+    <div class="car-card">
+      <div class="card-image">
+        <img [src]="coche.fotoPrincipal || 'assets/no-image.png'" [alt]="coche.modelo" />
+        <span class="badge">{{ coche.marca }}</span>
+      </div>
+
+      <div class="card-content">
+        <h3>{{ coche.modelo }}</h3>
+
+        <div class="tags">
+          @for(t of coche.tipo; track t) {
+          <span class="tag-mini">{{ t }}</span>
+          }
         </div>
 
-        <!-- BOTÓN CORRECTO PARA IR AL DETALLE -->
-        <button class="btn-details" [routerLink]="['/category-detalle', coche.id]">Ver más</button>
+        <div class="card-footer">
+          <div class="price">
+            {{ coche.precio | currency : 'EUR' : 'symbol' : '1.0-0' }}
+          </div>
+          <button class="btn-details" (click)="goToDetalle(coche.id)">Ver más</button>
+        </div>
       </div>
     </div>
+    } @empty {
+    <div class="no-results">
+      <p>No se encontraron coches.</p>
+    </div>
+    }
   </div>
-  }
 </div>
