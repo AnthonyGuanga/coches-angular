@@ -5,20 +5,19 @@ import { CochesService, Coche } from '../../services/coches.service';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-category',
-  standalone: true,                       // ⬅⬅⬅ IMPORTANTE
-  imports: [RouterModule, CommonModule],  // ⬅ Necesario para routerLink y *ngIf/*ngFor
-  templateUrl: './category.component.html',
-  styleUrls: ['./category.component.css'],
+  selector: 'app-coche',
+  standalone: true, // ⬅⬅⬅ IMPORTANTE
+  imports: [RouterModule, CommonModule], // ⬅ Necesario para routerLink y *ngIf/*ngFor
+  templateUrl: './coche.component.html',
+  styleUrls: ['./coche.component.css'],
 })
-export class CategoryComponent implements OnInit {
-
+export class cocheComponent implements OnInit {
   coches$!: Observable<Coche[]>;
 
   constructor(
     private cochesService: CochesService,
-    private router: Router        // ⬅ para navegación programática
-  ) { }
+    private router: Router // ⬅ para navegación programática
+  ) {}
 
   ngOnInit(): void {
     this.coches$ = this.cochesService.getCoches();
@@ -26,6 +25,6 @@ export class CategoryComponent implements OnInit {
 
   // 🚀 Navegación programática (opción segura si routerLink falla)
   goToDetalle(id: string) {
-    this.router.navigate(['/category-detalle', id]);
+    this.router.navigate(['/coche-detalle', id]);
   }
 }

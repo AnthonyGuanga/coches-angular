@@ -9,12 +9,12 @@ import { CochesService, Coche } from '../../services/coches.service';
 register();
 
 @Component({
-  selector: 'app-category-detalle',
+  selector: 'app-coche-detalle',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './category-detalle.component.html',
-  styleUrl: './category-detalle.component.css',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  templateUrl: './coche-detalle.component.html',
+  styleUrl: './coche-detalle.component.css',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CategoryDetalleComponent implements OnInit {
   private route = inject(ActivatedRoute);
@@ -24,13 +24,10 @@ export class CategoryDetalleComponent implements OnInit {
 
   ngOnInit() {
     this.coche$ = this.route.paramMap.pipe(
-      switchMap(params => {
+      switchMap((params) => {
         const id = params.get('id') || '';
         return this.cochesService.getCocheById(id);
       })
     );
-
-
   }
-
 }
