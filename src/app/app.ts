@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import { HomeComponent } from './home/home.component'
+//import { HomeComponent } from './home/home.component';
 @Component({
   selector: 'app-root',
   imports: [
@@ -11,12 +11,11 @@ import { HomeComponent } from './home/home.component'
     CommonModule,
     HeaderComponent,
     FooterComponent,
-    HomeComponent
+    // HomeComponent,
   ],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App {
   protected readonly title = signal('Angular-coches');
-
 }
