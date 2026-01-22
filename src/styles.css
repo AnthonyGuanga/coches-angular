@@ -5,3 +5,5 @@ body {
   padding: 0;      /* Por seguridad */
   overflow-x: hidden; /* Evita el scroll horizontal innecesario */
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
