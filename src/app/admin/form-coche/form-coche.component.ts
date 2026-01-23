@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-form-coche',
   imports: [
@@ -23,7 +24,9 @@ import { MatDividerModule } from '@angular/material/divider';
     MatRadioModule,
     MatCheckboxModule,
     MatDividerModule,
+    CommonModule,
   ],
+  standalone: true,
   templateUrl: './form-coche.component.html',
   styleUrl: './form-coche.component.css',
 })
