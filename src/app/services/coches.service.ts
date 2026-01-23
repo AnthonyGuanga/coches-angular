@@ -1,4 +1,5 @@
 import { Injectable, inject } from '@angular/core';
+import { Auth } from '@angular/fire/auth';
 import {
   Firestore,
   collection,
@@ -9,6 +10,7 @@ import {
   docData,
   query, // 👈 Nuevo
   where, // 👈 Nuevo
+  addDoc,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
@@ -35,7 +37,7 @@ export interface Coche {
 })
 export class CochesService {
   private firestore = inject(Firestore);
-
+  private auth = inject(Auth);
   private cochesCollection: CollectionReference<DocumentData> = collection(
     this.firestore,
     'coches'
@@ -73,5 +75,20 @@ export class CochesService {
   public getFotosCoche(id: string): Observable<any[]> {
     const ref = collection(this.firestore, `coches/${id}/fotos`);
     return collectionData(ref, { idField: 'id' }) as Observable<any[]>;
+  }
+
+  public addCoche(coche: Coche): Promise<any> {
+    const user = this.auth.currentUser;
+    if (!user) throw new Error('No autenticado');
+
+    const { id, ...cocheSinId } = coche;
+
+    const datosParaGuardar = {
+      ...cocheSinId,
+      creadoPor: user.uid,
+      creadoEn: new Date(),
+    };
+
+    return addDoc(this.cochesCollection, datosParaGuardar);
   }
 }
