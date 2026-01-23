@@ -49,7 +49,23 @@
       <div class="precio-tag" *ngIf="coche.precio">
         {{ coche.precio | currency : 'EUR' }}
       </div>
-    </div>
+
+      @if (authService.appUser$ | async; as user) {
+        <div class="reserva-wrapper">
+          @if (!coche.reservadoPor) {
+            <button mat-flat-button color="primary" class="btn-reservar-full" (click)="ejecutarReserva(coche.id)">
+              <mat-icon>event_available</mat-icon>
+              Reservar ahora
+            </button>
+          } @else {
+            <div class="aviso-reservado">
+              <mat-icon>lock</mat-icon>
+              <span>Vehículo no disponible (Reservado)</span>
+            </div>
+          }
+        </div>
+      }
+      </div>
   </div>
 
   @if (coche.fotos?.length) {

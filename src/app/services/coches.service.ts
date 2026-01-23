@@ -8,8 +8,8 @@ import {
   DocumentData,
   doc,
   docData,
-  query, // 👈 Nuevo
-  where, // 👈 Nuevo
+  query,
+  where,
   addDoc,
   updateDoc,
 } from '@angular/fire/firestore';
@@ -27,9 +27,8 @@ export interface Coche {
   nombreImagen?: string;
   precio?: number;
   fotoPrincipal?: string;
-  fotos?: string[]; // Array de URLs de fotos
-
-  // 👇 IMPORTANTE: Ahora es un array de strings (ej: ['suv', 'sedan'])
+  fotos?: string[];
+  reservadoPor?: string; // Mantenemos tu cambio en la interfaz
   tipo?: string[];
 }
 
@@ -44,22 +43,15 @@ export class CochesService {
     'coches'
   );
 
-  /** * 🔹 OBTENER COCHES (Con filtro opcional)
-   * Si pasas un tipo (ej: 'SUV'), filtra. Si no, trae todos.
-   */
+  /** 🔹 OBTENER COCHES (Con filtro opcional) */
   public getCoches(tipoFiltrado?: string | null): Observable<Coche[]> {
     const colRef = this.cochesCollection;
-
     let q;
 
     if (tipoFiltrado) {
-      // Normalizamos a minúsculas para asegurar coincidencia
       const valorBusqueda = tipoFiltrado.toLowerCase().trim();
-
-      // Usamos 'array-contains' porque en la BD 'tipo' es una lista: ['suv', 'hatchback']
       q = query(colRef, where('tipo', 'array-contains', valorBusqueda));
     } else {
-      // Sin filtro, traemos toda la colección
       q = query(colRef);
     }
 
@@ -72,37 +64,42 @@ export class CochesService {
     return docData(ref, { idField: 'id' }) as Observable<Coche>;
   }
 
-  /** 🔹 OBTENER FOTOS DE LA SUBCOLECCIÓN (Si la usas) */
+  /** 🔹 OBTENER FOTOS DE LA SUBCOLECCIÓN */
   public getFotosCoche(id: string): Observable<any[]> {
     const ref = collection(this.firestore, `coches/${id}/fotos`);
     return collectionData(ref, { idField: 'id' }) as Observable<any[]>;
   }
 
+  /** 🔹 AÑADIR COCHE */
   public addCoche(coche: Coche): Promise<any> {
-    //const user = this.auth.currentUser;
-    //if (!user) throw new Error('No autenticado');
-
     const { id, ...cocheSinId } = coche;
-
     const datosParaGuardar = {
       ...cocheSinId,
       uidVendedor: 'ID_TEMPORAL_PRUEBAS',
       fechaCreacion: new Date(),
     };
-
     return addDoc(this.cochesCollection, datosParaGuardar);
   }
+
+  /** 🔹 ACTUALIZAR COCHE */
   public updateCoche(id: string, coche: Coche): Promise<void> {
-    // Quitamos el id del objeto antes de guardar
     const { id: _, ...cocheSinId } = coche;
-
     const ref = doc(this.firestore, `coches/${id}`);
-
     const datosParaActualizar = {
       ...cocheSinId,
       fechaActualizacion: new Date(),
     };
-
     return updateDoc(ref, datosParaActualizar);
+  }
+
+  /** 🔹 RESERVAR COCHE (El método que te faltaba) */
+  public async reservarCoche(idCoche: string, uidUsuario: string): Promise<void> {
+    const ref = doc(this.firestore, `coches/${idCoche}`);
+    
+    // Solo actualizamos el campo reservadoPor para no sobrescribir todo el coche
+    return updateDoc(ref, {
+      reservadoPor: uidUsuario,
+      fechaReserva: new Date() 
+    });
   }
 }
