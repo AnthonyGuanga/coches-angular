@@ -11,6 +11,7 @@ import {
   query, // 👈 Nuevo
   where, // 👈 Nuevo
   addDoc,
+  updateDoc,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
@@ -90,5 +91,18 @@ export class CochesService {
     };
 
     return addDoc(this.cochesCollection, datosParaGuardar);
+  }
+  public updateCoche(id: string, coche: Coche): Promise<void> {
+    // Quitamos el id del objeto antes de guardar
+    const { id: _, ...cocheSinId } = coche;
+
+    const ref = doc(this.firestore, `coches/${id}`);
+
+    const datosParaActualizar = {
+      ...cocheSinId,
+      fechaActualizacion: new Date(),
+    };
+
+    return updateDoc(ref, datosParaActualizar);
   }
 }

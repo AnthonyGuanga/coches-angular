@@ -1,0 +1,96 @@
+/* CONTENEDOR PRINCIPAL */
+.container-form {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 32px;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+/* CABECERA */
+.header-form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.header-form h1 {
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.header-form mat-icon {
+  font-size: 42px;
+  width: 42px;
+  height: 42px;
+  color: #3f51b5;
+}
+
+/* FILAS DE 2 COLUMNAS */
+.fila-2-col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+/* CAMPOS FULL */
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+/* FORM FIELDS */
+mat-form-field {
+  width: 100%;
+}
+
+/* SEPARACIÓN GENERAL */
+mat-divider {
+  margin: 32px 0;
+}
+
+/* ACCIONES */
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+button mat-icon {
+  margin-right: 6px;
+}
+
+/* BOTÓN PRINCIPAL */
+button[mat-raised-button] {
+  padding: 6px 24px;
+  font-weight: 500;
+  border-radius: 24px;
+}
+
+/* EFECTO HOVER SUTIL */
+button[mat-raised-button]:hover {
+  filter: brightness(1.05);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .container-form {
+    padding: 20px;
+    margin: 16px;
+  }
+
+  .fila-2-col {
+    grid-template-columns: 1fr;
+  }
+
+  .header-form {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}

@@ -5,24 +5,33 @@
   </div>
 
   <form [formGroup]="form" (ngSubmit)="saveCoche()">
+    <!-- Marca / Modelo -->
     <div class="fila-2-col">
       <mat-form-field appearance="outline">
         <mat-label>Marca</mat-label>
-        <input matInput formControlName="marca" placeholder="Ej. Audi" />
-        <mat-error *ngIf="form.get('marca')?.hasError('required')"
-          >La marca es obligatoria</mat-error
-        >
+        <input matInput formControlName="marca" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Modelo</mat-label>
-        <input matInput formControlName="modelo" placeholder="Ej. A3" />
-        <mat-error *ngIf="form.get('modelo')?.hasError('required')"
-          >El modelo es obligatorio</mat-error
-        >
+        <input matInput formControlName="modelo" />
       </mat-form-field>
     </div>
 
+    <!-- Motor / Año -->
+    <div class="fila-2-col">
+      <mat-form-field appearance="outline">
+        <mat-label>Motor</mat-label>
+        <input matInput formControlName="motor" placeholder="Ej. 2.0 TDI" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Año</mat-label>
+        <input matInput type="number" formControlName="anio" />
+      </mat-form-field>
+    </div>
+
+    <!-- Precio / Kilometraje -->
     <div class="fila-2-col">
       <mat-form-field appearance="outline">
         <mat-label>Precio (€)</mat-label>
@@ -31,58 +40,65 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Kilómetros</mat-label>
-        <input matInput type="number" formControlName="km" />
+        <mat-label>Kilometraje</mat-label>
+        <input matInput type="number" formControlName="kilometraje" />
       </mat-form-field>
     </div>
 
+    <!-- Combustible / Cambio -->
     <div class="fila-2-col">
       <mat-form-field appearance="fill">
         <mat-label>Combustible</mat-label>
         <mat-select formControlName="combustible">
-          <mat-option *ngFor="let c of combustibles" [value]="c">
+          <mat-option *ngFor="let c of listaCombustibles" [value]="c">
             {{ c }}
           </mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
-        <mat-label>Año Fabricación</mat-label>
-        <input matInput type="number" formControlName="anio" />
+        <mat-label>Cambio</mat-label>
+        <mat-select formControlName="cambio">
+          <mat-option *ngFor="let c of listaCambios" [value]="c">
+            {{ c }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
 
-    <div class="seccion-radio">
-      <label>Estado del vehículo:</label>
-      <mat-radio-group formControlName="estado">
-        <mat-radio-button value="nuevo">Nuevo / Km0</mat-radio-button>
-        <mat-radio-button value="usado">Segunda Mano</mat-radio-button>
-        <mat-radio-button value="averiado">Para piezas</mat-radio-button>
-      </mat-radio-group>
-    </div>
-
-    <mat-divider></mat-divider>
-    <br />
-
-    <h3>Equipamiento Extra</h3>
-    <div class="seccion-checkbox">
-      <mat-checkbox formControlName="tieneAire">Aire Acondicionado</mat-checkbox>
-      <mat-checkbox formControlName="tieneGps">Navegador GPS</mat-checkbox>
-      <mat-checkbox formControlName="tieneCuero">Asientos de Cuero</mat-checkbox>
-    </div>
-
-    <br />
-
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Descripción detallada</mat-label>
-      <textarea matInput formControlName="descripcion" rows="3"></textarea>
+    <!-- Tipo -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Tipo de vehículo</mat-label>
+      <mat-select formControlName="tipo" multiple>
+        <mat-option *ngFor="let t of listaTipos" [value]="t">
+          {{ t }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
+    <!-- Fotos -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Foto principal (URL)</mat-label>
+      <input matInput formControlName="fotoPrincipal" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Otras fotos (una URL por línea)</mat-label>
+      <textarea
+        matInput
+        rows="3"
+        [value]="form.get('fotos')?.value?.join('\n')"
+        (input)="form.get('fotos')?.setValue($any($event.target).value.split('\n'))"
+      ></textarea>
+    </mat-form-field>
+
+    <!-- Acciones -->
     <div class="acciones">
       <button mat-button type="button" routerLink="/coches">Cancelar</button>
+
       <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
         <mat-icon>save</mat-icon>
-        {{ id === null ? 'Guardar Coche' : 'Actualizar Datos' }}
+        {{ id === null ? 'Guardar Coche' : 'Actualizar Coche' }}
       </button>
     </div>
   </form>

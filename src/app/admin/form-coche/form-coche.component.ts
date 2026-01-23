@@ -1,26 +1,14 @@
-import { Component, NgModule, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Coche, CochesService } from '../../services/coches.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Coche, CochesService } from '../../services/coches.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-
 @Component({
   selector: 'app-form-coche',
-  imports: [
-    MatIconModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatDividerModule,
-    MatCheckboxModule,
-    ReactiveFormsModule,
-  ],
+  imports: [ReactiveFormsModule, MatIconModule, MatFormFieldModule, MatSelectModule],
   templateUrl: './form-coche.component.html',
   styleUrl: './form-coche.component.css',
 })
@@ -29,6 +17,7 @@ export class FormCocheComponent implements OnInit {
   id: string | null = null;
   titulo = 'Nuevo Coche';
   loading = false;
+
   listaCombustibles = ['Gasolina', 'Diesel', 'Híbrido', 'Eléctrico', 'GLP'];
   listaCambios = ['Manual', 'Automático'];
   listaTipos = ['SUV', 'Sedán', 'Compacto', 'Familiar', 'Deportivo', '4x4', 'Cabrio'];
@@ -50,38 +39,63 @@ export class FormCocheComponent implements OnInit {
       combustible: ['', Validators.required],
       cambio: ['Manual', Validators.required],
       tipo: [[], Validators.required],
+
       fotoPrincipal: [''],
-      fotos: [''],
+      fotos: [[]],
     });
   }
+
   ngOnInit(): void {
     this.id = this.aRouter.snapshot.paramMap.get('id');
-    if (this.id !== null) {
+
+    if (this.id) {
       this.titulo = 'Editar Coche';
       this.loading = true;
-      this.cochesService.getCocheById(this.id).subscribe((data: Coche) => {
-        this.loading = false;
-        this.form.setValue(data);
+
+      this.cochesService.getCocheById(this.id).subscribe({
+        next: (data: Coche) => {
+          console.log('Coche Firestore:', data);
+
+          this.form.patchValue({
+            marca: data.marca ?? '',
+            modelo: data.modelo ?? '',
+            motor: data.motor ?? '',
+            anio: data.anio ?? new Date().getFullYear(),
+            kilometraje: data.kilometraje ?? 0,
+            precio: data.precio ?? 0,
+            combustible: data.combustible ?? '',
+            cambio: data.cambio ?? 'Manual',
+            tipo: data.tipo ?? [],
+            fotoPrincipal: data.fotoPrincipal ?? '',
+            fotos: data.fotos ?? [],
+          });
+
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error(err);
+          this.loading = false;
+        },
       });
     }
   }
 
   saveCoche() {
-    if (this.form.valid) {
-      const nuevoCoche = this.form.value;
+    if (this.form.invalid) return;
 
-      this.cochesService
-        .addCoche(nuevoCoche)
-        .then(() => {
-          console.log('Coche guardado');
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+    this.loading = true;
+    const coche = this.form.value;
+
+    if (this.id) {
+      this.cochesService.updateCoche(this.id, coche).then(() => {
+        this.snackbar.open('Coche actualizado correctamente', 'Cerrar', { duration: 3000 });
+        this.router.navigate(['/coches']);
+      });
+    } else {
+      this.cochesService.addCoche(coche).then(() => {
+        this.snackbar.open('Coche guardado correctamente', 'Cerrar', { duration: 3000 });
+        this.router.navigate(['/coches']);
+      });
     }
-  }
-  irAlListado() {
-    this.snackbar.open('Guardado correctamente', 'Cerrar', { duration: 3000 });
-    this.router.navigate(['/coches']);
   }
 }
