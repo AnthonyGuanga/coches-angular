@@ -1,47 +1,74 @@
 @if (coche$ | async; as coche) {
+
 <div class="container fade-in">
+  <div class="header-detalle">
+    <h1 class="titulo">
+      {{ coche.marca }} <span class="modelo">{{ coche.modelo }}</span>
+    </h1>
 
-    <h1 class="titulo">{{ coche.marca }} <span class="modelo">{{ coche.modelo }}</span></h1>
+    <div class="acciones">
+      <button mat-fab extended color="primary" [routerLink]="['/admin/form-coche', coche.id]">
+        <mat-icon>edit</mat-icon>
+        Editar Coche
+      </button>
+    </div>
+  </div>
 
-    <div class="contenido-principal">
-        <div class="imagen-wrapper">
-            <img [src]="coche.fotoPrincipal" class="img-principal" alt="Foto principal">
-        </div>
-
-        <div class="ficha-tecnica">
-            <h2>Especificaciones</h2>
-            <div class="dato-item">
-                <span class="label">Año</span>
-                <span class="valor">{{ coche.anio }}</span>
-            </div>
-            <div class="dato-item">
-                <span class="label">Cambio</span>
-                <span class="valor">{{ coche.cambio }}</span>
-            </div>
-            <div class="dato-item">
-                <span class="label">Combustible</span>
-                <span class="valor">{{ coche.combustible }}</span>
-            </div>
-            <div class="precio-tag" *ngIf="coche.precio">
-                {{ coche.precio | currency:'EUR' }}
-            </div>
-        </div>
+  <div class="contenido-principal">
+    <div class="imagen-wrapper">
+      <img
+        [src]="coche.fotoPrincipal || 'assets/no-image.png'"
+        class="img-principal"
+        alt="Foto principal"
+      />
     </div>
 
-    @if (coche.fotos?.length) {
-    <div class="galeria-section">
-        <h3>Galería de Imágenes</h3>
-        <div class="fotos-grid">
-            @for (fotoUrl of coche.fotos; track $index) {
-            <div class="foto-card">
-                <img [src]="fotoUrl" alt="Foto galería">
-            </div>
-            }
-        </div>
-    </div>
-    }
+    <div class="ficha-tecnica">
+      <h2>Especificaciones</h2>
 
+      <div class="dato-item">
+        <span class="label">Año</span>
+        <span class="valor">{{ coche.anio }}</span>
+      </div>
+      <div class="dato-item">
+        <span class="label">Cambio</span>
+        <span class="valor">{{ coche.cambio }}</span>
+      </div>
+      <div class="dato-item">
+        <span class="label">Combustible</span>
+        <span class="valor">{{ coche.combustible }}</span>
+      </div>
+
+      @if (coche.tipo && coche.tipo.length > 0) {
+      <div class="dato-item">
+        <span class="label">Carrocería</span>
+        <span class="valor">{{ coche.tipo.join(', ') }}</span>
+      </div>
+      }
+
+      <div class="precio-tag" *ngIf="coche.precio">
+        {{ coche.precio | currency : 'EUR' }}
+      </div>
+    </div>
+  </div>
+
+  @if (coche.fotos?.length) {
+  <div class="galeria-section">
+    <h3>Galería de Imágenes</h3>
+    <div class="fotos-grid">
+      @for (fotoUrl of coche.fotos; track $index) {
+      <div class="foto-card">
+        <img [src]="fotoUrl" alt="Foto galería" />
+      </div>
+      }
+    </div>
+  </div>
+  }
 </div>
+
 } @else {
-<div class="loading">Cargando cochazo...</div>
+<div class="loading-container">
+  <mat-spinner diameter="50"></mat-spinner>
+  <p>Cargando cochazo...</p>
+</div>
 }

@@ -78,15 +78,15 @@ export class CochesService {
   }
 
   public addCoche(coche: Coche): Promise<any> {
-    const user = this.auth.currentUser;
-    if (!user) throw new Error('No autenticado');
+    //const user = this.auth.currentUser;
+    //if (!user) throw new Error('No autenticado');
 
     const { id, ...cocheSinId } = coche;
 
     const datosParaGuardar = {
       ...cocheSinId,
-      creadoPor: user.uid,
-      creadoEn: new Date(),
+      uidVendedor: 'ID_TEMPORAL_PRUEBAS',
+      fechaCreacion: new Date(),
     };
 
     return addDoc(this.cochesCollection, datosParaGuardar);
