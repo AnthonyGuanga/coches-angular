@@ -28,14 +28,20 @@
   <nav class="nav-links">
     <a routerLink="/category" class="link">Coches</a>
 
+    <!-- Usuario logueado -->
     <ng-container *ngIf="authService.appUser$ | async as user; else noLogueado">
       <span class="user-info">Bienvenid@, {{ user.nombre }}</span>
       <a (click)="logout()" class="link logout-btn" style="cursor: pointer">Cerrar Sesión</a>
+
+      <!-- SOLO PARA ADMIN -->
+      <a *ngIf="user.rol === 'administrador'" routerLink="/admin/form-coche" class="link">
+        Agregar Coche
+      </a>
     </ng-container>
 
+    <!-- Usuario no logueado -->
     <ng-template #noLogueado>
       <a routerLink="/login" class="link">Login</a>
     </ng-template>
-    <a routerLink="/admin/form-coche" class="link">Agregar Coche</a>
   </nav>
 </header>

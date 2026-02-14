@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CarouselComponent } from '../components/carousel/carousel.component';
 import { CochesService, Coche } from '../services/coches.service';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { CarTypeCardComponent } from '../components/car-type-card/car-type-card.component';
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -25,16 +26,12 @@ export class HomeComponent implements OnInit {
     { id: 'coupé', label: 'coupé', icon: 'coupé' },
     { id: 'furgoneta', label: 'furgoneta', icon: 'furgoneta' },
     { id: 'sedán', label: 'sedán', icon: 'sedán' },
+    { id: 'hatchback', label: 'hatchback', icon: 'hatchback' },
   ];
 
 
   filtrarPorTipo(tipo: string) {
-    if (this.categoriaSeleccionada === tipo) {
-      this.categoriaSeleccionada = null;
-    } else {
-      this.categoriaSeleccionada = tipo;
-    }
-
+    this.categoriaSeleccionada = this.categoriaSeleccionada === tipo ? null : tipo;
     this.cargarCoches();
   }
 
@@ -44,12 +41,18 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarCoches();
-    this.cargarCarrusel(); // 👈 NUEVO
+    this.cargarCarrusel();
   }
 
   cargarCoches() {
-    this.coches$ = this.cochesService.getCoches(this.categoriaSeleccionada);
+    this.coches$ = this.cochesService.getCoches(this.categoriaSeleccionada).pipe(
+      map(coches => {
+        // Filtramos solo coches desde 2020
+        return coches.filter(c => Number(c.anio) >= 2023);
+      })
+    );
   }
+
   cargarCarrusel() {
     this.cochesService.getCoches(null).subscribe(coches => {
 

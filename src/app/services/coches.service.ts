@@ -28,7 +28,7 @@ export interface Coche {
   precio?: number;
   fotoPrincipal?: string;
   fotos?: string[];
-  reservadoPor?: string; // Mantenemos tu cambio en la interfaz
+  reservadoPor?: string;
   tipo?: string[];
 }
 

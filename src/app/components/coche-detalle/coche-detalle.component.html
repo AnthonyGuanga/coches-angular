@@ -1,90 +1,83 @@
-@if (coche$ | async; as coche) {
+<ng-container *ngIf="coche$ | async as coche; else loading">
+  <div *ngIf="coche" class="container fade-in"> <!-- 🔹 seguridad extra -->
+    <div class="header-detalle">
+      <h1 class="titulo">
+        {{ coche.marca }} <span class="modelo">{{ coche.modelo }}</span>
+      </h1>
 
-<div class="container fade-in">
-  <div class="header-detalle">
-    <h1 class="titulo">
-      {{ coche.marca }} <span class="modelo">{{ coche.modelo }}</span>
-    </h1>
-
-    <div class="acciones">
-      <button mat-fab extended color="primary" [routerLink]="['/admin/form-coche', coche.id]">
-        <mat-icon>edit</mat-icon>
-        Editar Coche
-      </button>
-    </div>
-  </div>
-
-  <div class="contenido-principal">
-    <div class="imagen-wrapper">
-      <img
-        [src]="coche.fotoPrincipal || 'assets/no-image.png'"
-        class="img-principal"
-        alt="Foto principal"
-      />
+      <div class="acciones">
+        <!-- Solo admin ve editar -->
+        <ng-container *ngIf="authService.appUser$ | async as user">
+          <button 
+            *ngIf="user.rol === 'administrador'"
+            mat-fab 
+            extended 
+            color="primary" 
+            [routerLink]="['/admin/form-coche', coche.id]">
+            <mat-icon>edit</mat-icon>
+            Editar Coche
+          </button>
+        </ng-container>
+      </div>
     </div>
 
-    <div class="ficha-tecnica">
-      <h2>Especificaciones</h2>
-
-      <div class="dato-item">
-        <span class="label">Año</span>
-        <span class="valor">{{ coche.anio }}</span>
-      </div>
-      <div class="dato-item">
-        <span class="label">Cambio</span>
-        <span class="valor">{{ coche.cambio }}</span>
-      </div>
-      <div class="dato-item">
-        <span class="label">Combustible</span>
-        <span class="valor">{{ coche.combustible }}</span>
+    <div class="contenido-principal">
+      <div class="imagen-wrapper">
+        <img [src]="coche.fotoPrincipal || 'assets/no-image.png'" class="img-principal" alt="Foto principal" />
       </div>
 
-      @if (coche.tipo && coche.tipo.length > 0) {
-      <div class="dato-item">
-        <span class="label">Carrocería</span>
-        <span class="valor">{{ coche.tipo.join(', ') }}</span>
-      </div>
-      }
+      <div class="ficha-tecnica">
+        <h2>Especificaciones</h2>
 
-      <div class="precio-tag" *ngIf="coche.precio">
-        {{ coche.precio | currency : 'EUR' }}
-      </div>
-
-      @if (authService.appUser$ | async; as user) {
-        <div class="reserva-wrapper">
-          @if (!coche.reservadoPor) {
-            <button mat-flat-button color="primary" class="btn-reservar-full" (click)="ejecutarReserva(coche.id)">
-              <mat-icon>event_available</mat-icon>
-              Reservar ahora
-            </button>
-          } @else {
-            <div class="aviso-reservado">
-              <mat-icon>lock</mat-icon>
-              <span>Vehículo no disponible (Reservado)</span>
-            </div>
-          }
+        <div class="dato-item">
+          <span class="label">Año</span>
+          <span class="valor">{{ coche.anio }}</span>
         </div>
-      }
-      </div>
-  </div>
+        <div class="dato-item">
+          <span class="label">Cambio</span>
+          <span class="valor">{{ coche.cambio }}</span>
+        </div>
+        <div class="dato-item">
+          <span class="label">Combustible</span>
+          <span class="valor">{{ coche.combustible }}</span>
+        </div>
 
-  @if (coche.fotos?.length) {
-  <div class="galeria-section">
-    <h3>Galería de Imágenes</h3>
-    <div class="fotos-grid">
-      @for (fotoUrl of coche.fotos; track $index) {
-      <div class="foto-card">
-        <img [src]="fotoUrl" alt="Foto galería" />
+        <div class="dato-item" *ngIf="coche.tipo?.length">
+          <span class="label">Carrocería</span>
+          <span class="valor">{{ coche.tipo?.join(', ') }}</span>
+        </div>
+
+        <div class="precio-tag" *ngIf="coche.precio">
+          {{ coche.precio | currency:'EUR' }}
+        </div>
+
+        <div class="reserva-wrapper" *ngIf="authService.appUser$ | async as user">
+          <button *ngIf="!coche.reservadoPor" mat-flat-button color="primary" class="btn-reservar-full" (click)="ejecutarReserva(coche.id)">
+            <mat-icon>event_available</mat-icon>
+            Reservar ahora
+          </button>
+          <div *ngIf="coche.reservadoPor" class="aviso-reservado">
+            <mat-icon>lock</mat-icon>
+            <span>Vehículo no disponible (Reservado)</span>
+          </div>
+        </div>
       </div>
-      }
+    </div>
+
+    <div class="galeria-section" *ngIf="coche.fotos?.length">
+      <h3>Galería de Imágenes</h3>
+      <div class="fotos-grid">
+        <div class="foto-card" *ngFor="let fotoUrl of coche.fotos; index as i">
+          <img [src]="fotoUrl" alt="Foto galería" />
+        </div>
+      </div>
     </div>
   </div>
-  }
-</div>
+</ng-container>
 
-} @else {
-<div class="loading-container">
-  <mat-spinner diameter="50"></mat-spinner>
-  <p>Cargando cochazo...</p>
-</div>
-}
+<ng-template #loading>
+  <div class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Cargando coche...</p>
+  </div>
+</ng-template>

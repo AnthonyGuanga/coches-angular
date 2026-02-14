@@ -4,17 +4,25 @@
     <mat-icon>directions_car</mat-icon>
   </div>
 
-  <form [formGroup]="form" (ngSubmit)="saveCoche()">
+  <form [formGroup]="form" (ngSubmit)="saveCoche()">  <!-- Cuando el usuario pulsa el botón type="submit", Angular ejecuta saveCoche()-->
     <!-- Marca / Modelo -->
     <div class="fila-2-col">
       <mat-form-field appearance="outline">
         <mat-label>Marca</mat-label>
         <input matInput formControlName="marca" />
+
+        <mat-error *ngIf="form.get('marca')?.hasError('required') && form.get('marca')?.touched">
+          La marca es obligatoria
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Modelo</mat-label>
         <input matInput formControlName="modelo" />
+
+        <mat-error *ngIf="form.get('modelo')?.hasError('required') && form.get('modelo')?.touched">
+          El modelo es obligatorio
+        </mat-error>
       </mat-form-field>
     </div>
 
@@ -23,11 +31,27 @@
       <mat-form-field appearance="outline">
         <mat-label>Motor</mat-label>
         <input matInput formControlName="motor" placeholder="Ej. 2.0 TDI" />
+
+        <mat-error *ngIf="form.get('motor')?.hasError('required') && form.get('motor')?.touched">
+          El motor es obligatorio
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Año</mat-label>
-        <input matInput type="number" formControlName="anio" />
+        <input matInput type="number" formControlName="anio" [min]="1980" [max]="anioActual"/>
+      
+        <mat-error *ngIf="form.get('anio')?.hasError('required') && form.get('anio')?.touched">
+          El año es obligatorio
+        </mat-error>
+
+        <mat-error *ngIf="form.get('anio')?.hasError('min') && form.get('anio')?.touched">
+          No puede ser menor que 1980
+        </mat-error>
+
+        <mat-error *ngIf="form.get('anio')?.hasError('max') && form.get('anio')?.touched">
+          No puede ser mayor que {{ anioActual }}
+        </mat-error>
       </mat-form-field>
     </div>
 
@@ -37,11 +61,27 @@
         <mat-label>Precio (€)</mat-label>
         <input matInput type="number" formControlName="precio" />
         <mat-icon matSuffix>euro</mat-icon>
+
+        <mat-error *ngIf="form.get('precio')?.hasError('required') && form.get('precio')?.touched">
+          El precio es obligatorio
+        </mat-error>
+
+        <mat-error *ngIf="form.get('precio')?.hasError('min') && form.get('precio')?.touched">
+          El precio mínimo es 1000 €
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Kilometraje</mat-label>
         <input matInput type="number" formControlName="kilometraje" />
+
+        <mat-error *ngIf="form.get('kilometraje')?.hasError('required') && form.get('kilometraje')?.touched">
+          El kilometraje es obligatorio
+        </mat-error>
+
+        <mat-error *ngIf="form.get('kilometraje')?.hasError('min') && form.get('kilometraje')?.touched">
+          No puede ser negativo
+        </mat-error>
       </mat-form-field>
     </div>
 
@@ -54,6 +94,10 @@
             {{ c }}
           </mat-option>
         </mat-select>
+
+        <mat-error *ngIf="form.get('combustible')?.hasError('required') && form.get('combustible')?.touched">
+          Debe seleccionar un combustible
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
@@ -63,6 +107,10 @@
             {{ c }}
           </mat-option>
         </mat-select>
+
+        <mat-error *ngIf="form.get('cambio')?.hasError('required') && form.get('cambio')?.touched">
+          Debe seleccionar un tipo de cambio
+        </mat-error>
       </mat-form-field>
     </div>
 
@@ -74,6 +122,10 @@
           {{ t }}
         </mat-option>
       </mat-select>
+
+      <mat-error *ngIf="form.get('tipo')?.hasError('required') && form.get('tipo')?.touched">
+        Debe seleccionar al menos un tipo
+      </mat-error>
     </mat-form-field>
 
     <!-- Fotos -->
@@ -94,7 +146,7 @@
 
     <!-- Acciones -->
     <div class="acciones">
-      <button mat-button type="button" routerLink="/coches">Cancelar</button>
+      <button mat-button type="button" routerLink="/category">Cancelar</button>
 
       <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
         <mat-icon>save</mat-icon>

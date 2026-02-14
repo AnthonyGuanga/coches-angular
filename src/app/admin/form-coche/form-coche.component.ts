@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Coche, CochesService } from '../../services/coches.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,6 +25,7 @@ import { CommonModule } from '@angular/common';
     MatCheckboxModule,
     MatDividerModule,
     CommonModule,
+    RouterModule
   ],
   standalone: true,
   templateUrl: './form-coche.component.html',
@@ -36,9 +37,11 @@ export class FormCocheComponent implements OnInit {
   titulo = 'Nuevo Coche';
   loading = false;
 
+  anioActual = new Date().getFullYear();
+
   listaCombustibles = ['Gasolina', 'Diesel', 'Híbrido', 'Eléctrico', 'GLP'];
   listaCambios = ['Manual', 'Automático'];
-  listaTipos = ['SUV', 'Sedán', 'Compacto', 'Familiar', 'Deportivo', '4x4', 'Cabrio'];
+  listaTipos = ['SUV', 'monovolumen', 'familiar', 'coupé', 'furgoneta', 'sedán', 'hatchback'];
 
   constructor(
     private fb: FormBuilder,
@@ -51,9 +54,9 @@ export class FormCocheComponent implements OnInit {
       marca: ['', Validators.required],
       modelo: ['', Validators.required],
       motor: ['', Validators.required],
-      anio: [new Date().getFullYear(), [Validators.required, Validators.min(1980)]],
+      anio: [this.anioActual, [Validators.required, Validators.min(1980), Validators.max(this.anioActual)]],
       kilometraje: [0, [Validators.required, Validators.min(0)]],
-      precio: [0, [Validators.required, Validators.min(100)]],
+      precio: [0, [Validators.required, Validators.min(1000)]],
       combustible: ['', Validators.required],
       cambio: ['Manual', Validators.required],
       tipo: [[], Validators.required],
@@ -99,20 +102,25 @@ export class FormCocheComponent implements OnInit {
   }
 
   saveCoche() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched(); //si el usuario pulsa guardar sin rellenar nada, aparecerán todos los errores
+      return;
+    }
 
     this.loading = true;
     const coche = this.form.value;
 
     if (this.id) {
+      // Editar
       this.cochesService.updateCoche(this.id, coche).then(() => {
         this.snackbar.open('Coche actualizado correctamente', 'Cerrar', { duration: 3000 });
-        this.router.navigate(['/coches']);
+        this.router.navigate(['/coche-detalle', this.id]);
       });
     } else {
-      this.cochesService.addCoche(coche).then(() => {
+      // Nuevo
+      this.cochesService.addCoche(coche).then((nuevoCocheId) => {
         this.snackbar.open('Coche guardado correctamente', 'Cerrar', { duration: 3000 });
-        this.router.navigate(['/coches']);
+        this.router.navigate(['/coche-detalle', nuevoCocheId]);
       });
     }
   }

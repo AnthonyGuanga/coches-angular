@@ -2,22 +2,11 @@ import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 // Importaciones de Firebase Auth
 import { 
-  Auth, 
-  authState, 
-  signInWithEmailAndPassword, 
-  signOut, 
-  createUserWithEmailAndPassword, 
-  User 
-} from '@angular/fire/auth';
+  Auth, authState, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, User } from '@angular/fire/auth';
 // Importaciones de Firestore
-import { 
-  Firestore, 
-  doc, 
-  setDoc, 
-  docData 
-} from '@angular/fire/firestore';
+import { Firestore, doc, setDoc, docData } from '@angular/fire/firestore';
 // RxJS
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { switchMap, shareReplay } from 'rxjs/operators';
 
 // Definimos los tipos de rol
@@ -41,26 +30,38 @@ export class AuthService {
   private firestore: Firestore = inject(Firestore);
   private router = inject(Router);
 
+  // BehaviorSubject interno para controlar appUser$
+  private _user$ = new BehaviorSubject<AppUser | null>(null);
+  public appUser$: Observable<AppUser | null> = this._user$.asObservable().pipe(shareReplay(1));;
+
   // 1. Observable del estado de Firebase Auth (identidad básica)
   public firebaseUser$ = authState(this.auth);
 
+  constructor() {
+    // Escucha cambios en firebaseUser$ y actualiza _user$ automáticamente
+    this.firebaseUser$.pipe(
+      switchMap(user => {
+        if (user) {
+          const userDocRef = doc(this.firestore, 'usuarios', user.uid);
+          return docData(userDocRef, { idField: 'uid' }) as Observable<AppUser>;
+        } else {
+          return of(null);
+        }
+      })
+    ).subscribe(u => this._user$.next(u));
+  }
+
   /**
-   * 2. Observable del Perfil Completo (Identidad + Datos de Firestore)
-   * Usamos shareReplay(1) para que si varios componentes se suscriben, 
-   * no se hagan múltiples peticiones a Firestore innecesariamente.
-   */
-  public appUser$: Observable<AppUser | null> = this.firebaseUser$.pipe(
-    switchMap((user: User | null) => {
-      if (user) {
-        const userDocRef = doc(this.firestore, 'usuarios', user.uid);
-        // Retornamos los datos del documento con el ID incluido
-        return docData(userDocRef, { idField: 'uid' }) as Observable<AppUser>;
-      } else {
-        return of(null);
-      }
-    }),
-    shareReplay(1) 
-  );
+ * Devuelve true si el usuario actual es administrador
+ */
+  public isAdmin(): Observable<boolean> {
+    return this.appUser$.pipe(
+      switchMap(user => {
+        if (!user) return of(false);
+        return of(user.rol === 'administrador');
+      })
+    );
+  }
 
   /**
    * Intenta iniciar sesión con Email y Contraseña.
@@ -112,6 +113,7 @@ export class AuthService {
   public async logout(): Promise<void> {
     try {
       await signOut(this.auth);
+      this._user$.next(null); // fuerza actualización
       // Aquí es donde usamos el router:
       await this.router.navigate(['/login']);
     } catch (error) {

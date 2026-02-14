@@ -1,34 +1,45 @@
 <main class="home-container">
-  <h1>¡Bienvenido a Mi App!</h1>
+  <!-- Bienvenida -->
+  <h1>Descubre tu próximo coche en nuestra web</h1>
+  <p class="subtitle">
+    Explora las mejores ofertas, encuentra tu modelo ideal y reserva tu vehículo de manera rápida y segura.
+  </p>
 
+  <!-- Carrusel -->
   <app-carousel [slides]="carouselSlides"></app-carousel>
 
-
+  <!-- Tipos de coches -->
   <div class="grid-cars">
-    @for (tipo of tiposCoche; track tipo.id) {
-    <app-car-type-card [tipo]="tipo" [active]="categoriaSeleccionada === tipo.id" (selected)="filtrarPorTipo($event)">
+    <app-car-type-card
+      *ngFor="let tipo of tiposCoche"
+      [tipo]="tipo"
+      [active]="categoriaSeleccionada === tipo.id"
+      (selected)="filtrarPorTipo($event)">
     </app-car-type-card>
-    }
   </div>
 
+  <!-- Anuncios Destacados -->
   <div class="category-header">
     <h2 class="section-title">
       Anuncios Destacados
-      @if (categoriaSeleccionada) {
-      <span class="highlight"> (Mostrando: {{ categoriaSeleccionada }}) </span>
-      } @else {
-      <span class="subtitle"> (Todos) </span>
-      }
+      <span *ngIf="categoriaSeleccionada; else todos" class="highlight">
+        (Mostrando: {{ categoriaSeleccionada }})
+      </span>
+      <ng-template #todos>
+        <span class="subtitle">(coches desde 2023)</span>
+      </ng-template>
     </h2>
   </div>
 
-  @if (coches$ | async; as coches) {
-  <div class="anuncios-grid">
-    @for (coche of coches; track coche.id) {
-    <div class="anuncio">
+  <!-- Lista de coches destacados -->
+  <div class="anuncios-grid" *ngIf="(coches$ | async) as coches; else noCoches">
+    <div class="anuncio" *ngFor="let coche of coches">
       <div class="anuncio-imagen-wrapper">
-        <img [src]="coche.fotoPrincipal" alt="{{ coche.marca }}" class="anuncio-img"
-          onerror="this.src='https://via.placeholder.com/300x200?text=Sin+Foto'" />
+        <img
+          [src]="coche.fotoPrincipal || 'https://via.placeholder.com/300x200?text=Sin+Foto'"
+          alt="{{ coche.marca }} {{ coche.modelo }}"
+          class="anuncio-img"
+        />
       </div>
 
       <div class="anuncio-content">
@@ -39,20 +50,21 @@
           {{ coche.anio }} • {{ coche.combustible }} • {{ coche.cambio }}
         </p>
         <span class="anuncio-precio">
-          {{ coche.precio | currency : 'EUR' : 'symbol' : '1.0-0' }}
+          {{ coche.precio | currency:'EUR':'symbol':'1.0-0' }}
         </span>
       </div>
     </div>
-    } @empty {
+  </div>
+
+  <!-- Mensaje si no hay coches -->
+  <ng-template #noCoches>
     <div style="grid-column: 1 / -1; text-align: center; padding: 40px">
       <p style="font-size: 1.2rem; color: #64748b">
-        No hay coches disponibles para <strong>{{ categoriaSeleccionada }}</strong>
+        No hay coches disponibles para <strong>{{ categoriaSeleccionada || 'esta categoría' }}</strong>
       </p>
       <button (click)="filtrarPorTipo(categoriaSeleccionada!)" class="btn-reset">
         Ver todos los coches
       </button>
     </div>
-    }
-  </div>
-  }
+  </ng-template>
 </main>

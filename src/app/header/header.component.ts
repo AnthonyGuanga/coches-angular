@@ -8,7 +8,7 @@ import { AuthService } from '../services/auth.service'; // Ajusta la ruta a tu c
   standalone: true,
   imports: [RouterModule, CommonModule], // Añadimos CommonModule aquí
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css',
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
   // Inyectamos el servicio
