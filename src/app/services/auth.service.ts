@@ -23,29 +23,66 @@ export class AuthService {
     ).subscribe(u => this._user$.next(u));
   }
 
+  // --- LOGIN CON NOMBRE DE USUARIO ---
   async loginWithUsername(username: string, password: string): Promise<void> {
     const q = query(collection(this.firestore, 'usuarios'), where('nombre', '==', username));
     const querySnapshot = await getDocs(q);
 
-    if (querySnapshot.empty) throw new Error('El usuario no existe');
+    if (querySnapshot.empty) {
+      this.snackBar.open('El usuario no existe', 'Cerrar', { duration: 3000 });
+      throw new Error('El usuario no existe');
+    }
 
     const email = querySnapshot.docs[0].data()['email'];
     await signInWithEmailAndPassword(this.auth, email, password);
     this.snackBar.open('¡Bienvenido!', 'Cerrar', { duration: 3000 });
   }
 
+  // --- REGISTRO CON COMPROBACIONES ---
   async register(email: string, password: string, nombre: string, telefono: string): Promise<void> {
-    const res = await createUserWithEmailAndPassword(this.auth, email, password);
-    await setDoc(doc(this.firestore, 'usuarios', res.user.uid), {
-      uid: res.user.uid,
-      email,
-      nombre,
-      telefono,
-      rol: 'cliente',
-      fechaRegistro: new Date()
-    });
+    try {
+      // 1. Comprobar si el NOMBRE DE USUARIO ya existe en Firestore
+      const q = query(collection(this.firestore, 'usuarios'), where('nombre', '==', nombre));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        this.snackBar.open(`El nombre "${nombre}" ya está en uso.`, 'Cerrar', { duration: 4000 });
+        throw new Error('Nombre de usuario duplicado');
+      }
+
+      // 2. Crear el usuario en Firebase Authentication (Email y Pass)
+      const res = await createUserWithEmailAndPassword(this.auth, email, password);
+
+      // 3. Guardar los datos adicionales en la colección 'usuarios'
+      await setDoc(doc(this.firestore, 'usuarios', res.user.uid), {
+        uid: res.user.uid,
+        email: email,
+        nombre: nombre,
+        telefono: telefono,
+        rol: 'cliente',
+        fechaRegistro: new Date()
+      });
+
+      this.snackBar.open('¡Cuenta creada con éxito!', 'OK', { duration: 3000 });
+
+    } catch (error: any) {
+      // Manejo de errores específicos de Firebase Auth
+      if (error.code === 'auth/email-already-in-use') {
+        this.snackBar.open('Este email ya está registrado.', 'Cerrar', { duration: 4000 });
+        throw new Error('Email duplicado');
+      }
+      
+      if (error.code === 'auth/weak-password') {
+        this.snackBar.open('La contraseña es muy débil.', 'Cerrar', { duration: 4000 });
+        throw new Error('Contraseña débil');
+      }
+
+      // Si no es un error controlado, lanzamos el original
+      throw error;
+    }
   }
 
+  // --- LOGOUT ---
   async logout() {
     await signOut(this.auth);
     this.router.navigate(['/login']);
