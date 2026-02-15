@@ -31,6 +31,7 @@
     <!-- Usuario logueado -->
     <ng-container *ngIf="authService.appUser$ | async as user; else noLogueado">
       <span class="user-info">Bienvenid@, {{ user.nombre }}</span>
+      <a routerLink="/user" class="link">Mis Reservas</a>
       <a (click)="logout()" class="link logout-btn" style="cursor: pointer">Cerrar Sesión</a>
 
       <!-- SOLO PARA ADMIN -->

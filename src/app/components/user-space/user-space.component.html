@@ -1,0 +1,28 @@
+<div class="container mt-4">
+  <h2>Mis Reservas</h2>
+
+  <div *ngIf="misReservas$ | async as reservas; else cargando">
+    
+    <div *ngIf="reservas.length > 0; else sinReservas" class="row">
+      <div class="col-md-4" *ngFor="let coche of reservas">
+        <div class="card mb-3">
+          <img [src]="coche.fotoPrincipal" class="card-img-top" alt="Coche">
+          <div class="card-body">
+            <h5 class="card-title">{{ coche.marca }} {{ coche.modelo }}</h5>
+            <p class="card-text">Precio: {{ coche.precio }}€</p>
+            <button (click)="cancelarReserva(coche.id)" class="btn btn-danger">Quitar Reserva</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #sinReservas>
+      <p>No tienes coches reservados actualmente.</p>
+    </ng-template>
+
+  </div>
+
+  <ng-template #cargando>
+    <p>Buscando tus reservas en la base de datos...</p>
+  </ng-template>
+</div>
