@@ -1,109 +1,130 @@
 :root {
   --primary: #2563eb;
-  --primary-hover: #1d4ed8;
+  --primary-hover: #1e40af;
+  --primary-soft: #eff6ff;
+
   --bg-main: #f8fafc;
   --bg-card: #ffffff;
-  --text-main: #1e293b;
+
+  --text-main: #0f172a;
   --text-muted: #64748b;
-  --border-color: #e2e8f0;
-  --radius: 12px;
-  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+  --border-color: #e5e7eb;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+
+  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.08);
+  --shadow-md: 0 8px 20px rgb(0 0 0 / 0.08);
+
+  --transition: 0.25s ease;
 }
 
-/* Contenedor Principal con Grid */
+/* --- RESET SUAVE --- */
+* {
+  box-sizing: border-box;
+}
+
+/* --- CONTENEDOR PRINCIPAL --- */
 .main-container {
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: 2rem;
   padding: 2rem;
-  max-width: 1400px;
+  max-width: 1440px;
   margin: 0 auto;
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  background-color: var(--bg-main);
   min-height: 100vh;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background-color: var(--bg-main);
 }
 
-/* --- SIDEBAR DE FILTROS --- */
+/* --- SIDEBAR --- */
 .filters-sidebar {
-  background: var(--bg-card);
-  padding: 1.5rem;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  height: sticky;
+  position: sticky;
   top: 2rem;
   align-self: start;
+  background: var(--bg-card);
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-color);
 }
 
 .filters-sidebar h3 {
-  margin-top: 0;
   margin-bottom: 1.5rem;
-  color: var(--text-main);
   font-size: 1.25rem;
-  border-bottom: 2px solid var(--primary);
-  display: inline-block;
-  padding-bottom: 0.25rem;
+  color: var(--text-main);
+  position: relative;
+}
+
+.filters-sidebar h3::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--primary);
+  margin-top: 0.4rem;
+  border-radius: 2px;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.4rem;
 }
 
 .form-group label {
   display: block;
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-muted);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .input-control {
   width: 100%;
-  padding: 0.6rem 0.8rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
   font-size: 0.95rem;
-  transition: all 0.2s;
-  box-sizing: border-box;
+  transition: border var(--transition), box-shadow var(--transition);
 }
 
 .input-control:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
 .range-control {
   width: 100%;
-  cursor: pointer;
   accent-color: var(--primary);
+  cursor: pointer;
 }
 
-/* --- GRID DE RESULTADOS --- */
+/* --- GRID RESULTADOS --- */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-  align-content: start;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.75rem;
 }
 
-/* --- TARJETA DE COCHE --- */
+/* --- CARD --- */
 .car-card {
   background: var(--bg-card);
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: var(--radius-md);
   border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  transition: transform var(--transition), box-shadow var(--transition);
 }
 
 .car-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
 }
 
+/* --- IMAGEN --- */
 .card-image {
   position: relative;
   height: 200px;
@@ -114,85 +135,121 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.4s ease;
 }
 
-.car-card:hover .card-image img {
-  transform: scale(1.05);
+.car-card:hover img {
+  transform: scale(1.06);
 }
 
 .badge {
   position: absolute;
   top: 12px;
   left: 12px;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.75rem;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
   font-weight: 700;
   color: var(--primary);
-  text-transform: uppercase;
-  backdrop-filter: blur(4px);
 }
 
+/* --- CONTENIDO --- */
 .card-content {
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
+  gap: 0.6rem;
   flex-grow: 1;
 }
 
 .card-content h3 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   color: var(--text-main);
+  margin: 0;
 }
 
+/* --- TAGS --- */
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  gap: 0.4rem;
 }
 
 .tag-mini {
-  background: #eff6ff;
+  background: var(--primary-soft);
   color: var(--primary);
   font-size: 0.7rem;
-  padding: 2px 8px;
-  border-radius: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
   font-weight: 600;
 }
 
-/* --- FOOTER DE LA TARJETA --- */
+/* --- FOOTER --- */
 .card-footer {
   margin-top: auto;
+  padding-top: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border-color);
+  gap: 1rem;
 }
 
 .price {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: var(--text-main);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  /* mismo tono base del header */
 }
 
+
 .btn-details {
-  background-color: var(--primary);
-  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  background-color: #3b82f6;
+  /* MISMO azul del header */
+  color: #ffffff;
+
   border: none;
-  padding: 0.6rem 1.2rem;
+  padding: 0.6rem 1.3rem;
   border-radius: 8px;
+
+  font-size: 0.9rem;
   font-weight: 600;
+
   cursor: pointer;
-  transition: background 0.2s;
+
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+  transition: background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .btn-details:hover {
-  background-color: var(--primary-hover);
+  background-color: #2563eb;
+  /* coherente con hover */
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(59, 130, 246, 0.45);
+}
+
+.btn-details:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+}
+
+
+/* --- NO RESULTS --- */
+.no-results {
+  grid-column: 1 / -1;
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 4rem 2rem;
+  text-align: center;
+  color: var(--text-muted);
+  box-shadow: var(--shadow-sm);
 }
 
 /* --- RESPONSIVE --- */
@@ -205,13 +262,4 @@
     position: relative;
     top: 0;
   }
-}
-
-.no-results {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 4rem;
-  color: var(--text-muted);
-  background: white;
-  border-radius: var(--radius);
 }
