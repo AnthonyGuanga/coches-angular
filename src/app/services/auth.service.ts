@@ -82,6 +82,11 @@ export class AuthService {
     }
   }
 
+  /** Obtener usuario por UID */
+  getUserById(uid: string) {
+    return docData(doc(this.firestore, `usuarios/${uid}`));
+  }
+
   // --- LOGOUT ---
   async logout() {
     await signOut(this.auth);

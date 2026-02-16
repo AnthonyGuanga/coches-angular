@@ -1,126 +1,73 @@
-/* Estilos generales para la demo */
-    :host {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: block;
-      min-height: 100vh;
-    }
-    .page-container {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    .content-placeholder {
-      flex: 1;
-      padding: 20px;
-      background-color: #f4f4f4;
-      color: #333;
-      text-align: center;
-    }
+.footer {
+  background-color: #1e293b;
+  color: #f1f5f9;
+  padding: 10px 10px 10px 10px;
+  font-family: 'Inter', sans-serif;
+}
 
-    /* --- ESTILOS DEL FOOTER --- */
-    .footer {
-      background-color: #111111; /* Negro suave, más elegante que #000 */
-      color: #b3b3b3; /* Gris claro para el texto, cansa menos la vista que el blanco puro */
-      padding: 3rem 0 0 0;
-      font-size: 0.9rem;
-    }
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 2rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      margin-bottom: 2rem;
-    }
+.footer-section {
+  flex: 1 1 200px;
+  min-width: 180px;
+}
 
-    .footer-section h3 {
-      color: #ffffff;
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-    }
+.footer-section.brand h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #3b82f6; /* azul corporativo */
+}
 
-    .footer-section h4 {
-      color: #ffffff;
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
+.footer-section.brand p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
 
-    .footer-section p {
-      line-height: 1.6;
-    }
+.footer-section h4 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  color: #3b82f6; /* azul corporativo */
+}
 
-    /* Estilos de la lista de enlaces */
-    .footer-section ul {
-      list-style: none;
-      padding: 0;
-    }
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
 
-    .footer-section ul li {
-      margin-bottom: 0.8rem;
-    }
+.footer-section ul li {
+  margin-bottom: 8px;
+}
 
-    .footer-section ul li a {
-      color: #b3b3b3;
-      text-decoration: none;
-      transition: color 0.3s ease, padding-left 0.3s ease;
-    }
+.footer-section ul li a {
+  text-decoration: none;
+  color: #f1f5f9;
+  transition: color 0.2s;
+}
 
-    .footer-section ul li a:hover {
-      color: #ffffff;
-      padding-left: 5px; /* Efecto de movimiento sutil */
-    }
+.footer-section ul li a:hover {
+  color: #3b82f6;
+}
 
-    /* Estilos de Iconos/Botones sociales */
-    .social-icons {
-      display: flex;
-      gap: 10px;
-    }
+.footer-bottom {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 0.8rem;
+  color: #94a3b8; /* gris suave */
+  border-top: 1px solid #334155;
+  padding-top: 15px;
+}
 
-    .icon {
-      color: #ffffff;
-      text-decoration: none;
-      border: 1px solid #333;
-      padding: 8px 15px;
-      border-radius: 4px;
-      font-size: 0.8rem;
-      transition: all 0.3s ease;
-    }
-
-    .icon:hover {
-      background-color: #ffffff;
-      color: #000000;
-      border-color: #ffffff;
-    }
-
-    /* Parte inferior (Copyright) */
-    .footer-bottom {
-      background-color: #000000; /* Un tono más oscuro para el fondo final */
-      padding: 1.5rem;
-      text-align: center;
-      border-top: 1px solid #222;
-    }
-
-    .footer-bottom p {
-      margin: 0;
-      font-size: 0.85rem;
-      color: #888;
-    }
-
-    /* Responsividad */
-    @media (max-width: 768px) {
-      .footer-content {
-        text-align: center;
-      }
-      
-      .social-icons {
-        justify-content: center;
-      }
-      
-      .footer-section ul li a:hover {
-        padding-left: 0; /* Desactivar movimiento en móvil */
-      }
-    }
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    gap: 20px;
+  }
+}

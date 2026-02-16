@@ -1,8 +1,8 @@
 <main class="home-container">
   <!-- Bienvenida -->
-  <h1>Descubre tu próximo coche en nuestra web</h1>
+  <h1>Encuentra el coche perfecto para ti</h1>
   <p class="subtitle">
-    Explora las mejores ofertas, encuentra tu modelo ideal y reserva tu vehículo de manera rápida y segura.
+    Explora nuestras ofertas exclusivas, compara modelos y reserva tu vehículo favorito en pocos clics.
   </p>
 
   <!-- Carrusel -->
@@ -26,20 +26,16 @@
         (Mostrando: {{ categoriaSeleccionada }})
       </span>
       <ng-template #todos>
-        <span class="subtitle">(coches desde 2023)</span>
+        <span class="subtitle">(coches más nuevos)</span>
       </ng-template>
     </h2>
   </div>
 
   <!-- Lista de coches destacados -->
   <div class="anuncios-grid" *ngIf="(coches$ | async) as coches; else noCoches">
-    <div class="anuncio" *ngFor="let coche of coches">
+    <div class="anuncio" *ngFor="let coche of coches" [routerLink]="['/coche-detalle', coche.id]" style="cursor: pointer;">
       <div class="anuncio-imagen-wrapper">
-        <img
-          [src]="coche.fotoPrincipal || 'https://via.placeholder.com/300x200?text=Sin+Foto'"
-          alt="{{ coche.marca }} {{ coche.modelo }}"
-          class="anuncio-img"
-        />
+        <img [src]="coche.fotoPrincipal || 'assets/proximamente.png'" alt="{{ coche.marca }} {{ coche.modelo }}" class="anuncio-img"/>
       </div>
 
       <div class="anuncio-content">

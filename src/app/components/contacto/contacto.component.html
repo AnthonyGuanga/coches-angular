@@ -1,0 +1,31 @@
+<div class="contacto-container">
+  <h1>Contacto</h1>
+  <p>¿Tienes dudas o quieres más información? Escríbenos y te responderemos lo antes posible.</p>
+
+  <form [formGroup]="contactoForm" (ngSubmit)="enviarFormulario()" class="contacto-form">
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input id="nombre" type="text" formControlName="nombre" placeholder="Tu nombre" />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Correo electrónico</label>
+      <input id="email" type="email" formControlName="email" placeholder="tu@correo.com" />
+    </div>
+
+    <div class="form-group">
+      <label for="mensaje">Mensaje</label>
+      <textarea id="mensaje" rows="5" formControlName="mensaje" placeholder="Escribe tu mensaje aquí"></textarea>
+    </div>
+
+    <button type="submit" class="btn-submit">Enviar mensaje</button>
+  </form>
+
+  <div class="contacto-info">
+    <h3>También puedes encontrarnos en:</h3>
+    <p>📍 Madrid, Majadahonda</p>
+    <p>📧 info@angularmotors.com</p>
+    <p>📞 +34 600 123 456</p>
+  </div>
+</div>
+

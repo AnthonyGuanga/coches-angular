@@ -212,4 +212,13 @@
     height: 250px;
     object-fit: cover;
   }
+
+  .clickable-img {
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .clickable-img:hover {
+    transform: scale(1.05);
+  }
+
 }

@@ -12,6 +12,7 @@ import {
   where,
   addDoc,
   updateDoc,
+  deleteDoc,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
@@ -102,4 +103,20 @@ export class CochesService {
       fechaReserva: new Date() 
     });
   }
+
+  /** ELIMINAR COCHE */
+  public async deleteCar(id: string) {
+    const ref = doc(this.firestore, 'coches', id);
+    await deleteDoc(ref);
+  }
+
+  /** QUITAR RESERVA (solo admin o desbloquear coche) */
+  public async quitarReserva(idCoche: string): Promise<void> {
+    const ref = doc(this.firestore, `coches/${idCoche}`);
+    await updateDoc(ref, {
+      reservadoPor: null,
+      fechaReserva: null
+    });
+  }
+
 }

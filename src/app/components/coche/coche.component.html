@@ -39,7 +39,7 @@
     @for (coche of filteredCoches$ | async; track coche.id) {
     <div class="car-card">
       <div class="card-image">
-        <img [src]="coche.fotoPrincipal || 'assets/no-image.png'" [alt]="coche.modelo" />
+        <img [src]="coche.fotoPrincipal || 'assets/proximamente.png'" [alt]="coche.modelo || 'Próximamente'" />
         <span class="badge">{{ coche.marca }}</span>
       </div>
 

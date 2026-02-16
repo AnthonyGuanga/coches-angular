@@ -6,7 +6,7 @@
       </h1>
 
       <div class="acciones">
-        <!-- Solo admin ve editar -->
+        <!-- Solo admin ve editar y eliminar -->
         <ng-container *ngIf="authService.appUser$ | async as user">
           <button 
             *ngIf="user.rol === 'administrador'"
@@ -17,13 +17,26 @@
             <mat-icon>edit</mat-icon>
             Editar Coche
           </button>
+
+          <button 
+            *ngIf="user.rol === 'administrador'"
+            mat-fab 
+            extended 
+            color="warn"
+            (click)="deleteCar(coche.id)">
+            <mat-icon>delete</mat-icon>
+            Eliminar
+          </button>
         </ng-container>
       </div>
     </div>
 
     <div class="contenido-principal">
       <div class="imagen-wrapper">
-        <img [src]="coche.fotoPrincipal || 'assets/no-image.png'" class="img-principal" alt="Foto principal" />
+        <img 
+          [src]="(coche.fotoPrincipal && coche.fotoPrincipal.length > 5) ? coche.fotoPrincipal : 'assets/proximamente.png'" 
+          class="img-principal" 
+          alt="Foto principal" (click)="abrirImagen(coche.fotoPrincipal || 'assets/proximamente.png', 'Foto principal')"/>
       </div>
 
       <div class="ficha-tecnica">
@@ -47,29 +60,64 @@
           <span class="valor">{{ coche.tipo?.join(', ') }}</span>
         </div>
 
+        <div class="dato-item" *ngIf="coche.tipo?.length">
+          <span class="label">Kilometraje</span>
+          <span class="valor">{{ coche.kilometraje }} km</span>
+        </div>
+
+        <div class="dato-item" *ngIf="coche.tipo?.length">
+          <span class="label">Motor</span>
+          <span class="valor">{{ coche.motor }}</span>
+        </div>
+
         <div class="precio-tag" *ngIf="coche.precio">
           {{ coche.precio | currency:'EUR' }}
         </div>
 
         <div class="reserva-wrapper" *ngIf="authService.appUser$ | async as user">
+          <!-- Botón normal de reservar para usuarios -->
           <button *ngIf="!coche.reservadoPor" mat-flat-button color="primary" class="btn-reservar-full" (click)="ejecutarReserva(coche.id)">
             <mat-icon>event_available</mat-icon>
             Reservar ahora
           </button>
+
+          <!-- Si ya está reservado -->
           <div *ngIf="coche.reservadoPor" class="aviso-reservado">
             <mat-icon>lock</mat-icon>
             <span>Vehículo no disponible (Reservado)</span>
+
+            <!-- Mostrar nombre del usuario que reservó -->
+            <div *ngIf="user.rol === 'administrador' && coche.reservadorNombre">
+              <small>Reservado por: {{ coche.reservadorNombre }}</small>
+            </div>
+
+            <!-- ADMIN: botón para quitar reserva -->
+            <button *ngIf="user.rol === 'administrador'" mat-stroked-button color="warn" (click)="removeReserva(coche.id)">
+              <mat-icon>lock_open</mat-icon>
+              Quitar reserva
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="galeria-section" *ngIf="coche.fotos?.length">
+    <div class="galeria-section">
       <h3>Galería de Imágenes</h3>
       <div class="fotos-grid">
-        <div class="foto-card" *ngFor="let fotoUrl of coche.fotos; index as i">
-          <img [src]="fotoUrl" alt="Foto galería" />
-        </div>
+
+        <!-- Si hay fotos, mostramos normalmente -->
+        <ng-container *ngIf="coche.fotos?.length; else noFotosGaleria">
+          <div class="foto-card" *ngFor="let fotoUrl of coche.fotos">
+            <img [src]="fotoUrl" alt="Foto galería" class="clickable-img" (click)="abrirImagen(fotoUrl, 'Foto galería')"/>
+          </div>
+        </ng-container>
+
+        <!-- Bloque alternativo cuando NO hay fotos -->
+        <ng-template #noFotosGaleria>
+          <div class="sin-fotos">
+            <p>Imágenes disponibles muy pronto</p>
+          </div>
+        </ng-template>
       </div>
     </div>
   </div>

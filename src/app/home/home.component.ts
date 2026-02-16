@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit {
     this.coches$ = this.cochesService.getCoches(this.categoriaSeleccionada).pipe(
       map(coches => {
         // Filtramos solo coches desde 2020
-        return coches.filter(c => Number(c.anio) >= 2023);
+        return coches.filter(c => Number(c.anio) >= 2022);
       })
     );
   }
@@ -62,8 +62,12 @@ export class HomeComponent implements OnInit {
           img: coche.fotoPrincipal!,
           title: `${coche.marca ?? ''} ${coche.modelo ?? ''}`.trim()
         }));
+      slides.push({
+        img: 'assets/logo.png',
+        title: 'Logo de la empresa'
+      });
 
-      this.carouselSlides = this.shuffle(slides).slice(0, 3);
+      this.carouselSlides = this.shuffle(slides).slice(0, 4);
     });
   }
 
