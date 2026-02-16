@@ -1,10 +1,9 @@
 @if (slides && slides.length > 0) {
 
 <div class="carousel-container">
-
-    <swiper-container style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff;" [slidesPerView]="1"
-        [loop]="true" [pagination]="true" [navigation]="true" [autoplay]="{ delay: 3000, disableOnInteraction: false }"
-        speed="600" ngSkipHydration>
+    <swiper-container [attr.slides-per-view]="1" [loop]="true" [pagination]="true" [navigation]="true" autoplay="true"
+        autoplay-delay="3000" autoplay-disable-on-interaction="false" speed="600"
+        style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff;">
 
         @for (item of slides; track item.title) {
         <swiper-slide>
@@ -13,7 +12,6 @@
         }
 
     </swiper-container>
-
 </div>
 
 } @else {

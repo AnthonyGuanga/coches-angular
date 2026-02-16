@@ -1,52 +1,123 @@
-/* Contenedor que asegura el espacio */
-.carousel-container {
+/* =========================================
+   1. CONTENEDOR PRINCIPAL (:host)
+   ========================================= */
+:host {
+    display: block;
     width: 100%;
-    max-width: 1200px;
-    /* Opcional: limita el ancho máximo en pantallas muy grandes */
-    margin: 0 auto;
-    /* Centra el carrusel */
+    position: relative;
+    /* Evita saltos de layout cuando carga */
+    min-height: 300px;
 }
 
+.carousel-container {
+    width: 100%;
+    /* Define la altura del carrusel aquí. 
+     - 60vh = 60% del alto de la pantalla (ideal para banners principales)
+     - 400px = altura fija (ideal para secciones de contenido) */
+    height: 50vh;
+    min-height: 300px;
+    max-height: 600px;
+    border-radius: 12px;
+    /* Opcional: bordes redondeados */
+    overflow: hidden;
+    /* Para que la imagen no se salga de los bordes redondeados */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+}
+
+/* =========================================
+   2. SWIPER WEB COMPONENTS
+   ========================================= */
 swiper-container {
     width: 100%;
-    /* Altura calculada para tus fotos: 
-     Si las fotos son 1024x600, una altura de 450px a 500px queda muy bien en web */
-    height: 500px;
-    border-radius: 12px;
-    /* Bordes redondeados estéticos */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    /* Sombra elegante */
+    height: 100%;
+
+    /* PERSONALIZACIÓN DE SWIPER (Variables CSS) */
+    --swiper-pagination-color: #fff;
+    --swiper-pagination-bullet-inactive-color: rgba(255, 255, 255, 0.5);
+    --swiper-pagination-bullet-inactive-opacity: 1;
+    --swiper-pagination-bullet-size: 10px;
+    --swiper-navigation-color: #fff;
+    --swiper-navigation-size: 24px;
 }
 
 swiper-slide {
-    background: #1a1a1a;
-    /* Fondo oscuro por si tarda en cargar la imagen */
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #f0f0f0;
+    /* Color de fondo mientras carga la imagen */
 }
 
-img {
+/* =========================================
+   3. IMÁGENES (La parte más importante)
+   ========================================= */
+swiper-slide img {
     display: block;
     width: 100%;
     height: 100%;
-    /* CRUCIAL: 'cover' recorta los bordes sobrantes para llenar el espacio sin estirar el coche */
+
+    /* CLAVE: 'cover' recorta la imagen para llenar el espacio sin deformarla. 
+     Usa 'contain' si prefieres ver la imagen completa con bordes negros. */
     object-fit: cover;
     object-position: center;
+
+    /* Efecto suave al cargar */
+    transition: transform 0.5s ease;
 }
 
-/* Ajuste para móviles: hacemos el carrusel más bajito */
-@media (max-width: 768px) {
-    swiper-container {
-        height: 250px;
+/* Efecto opcional: Zoom suave al pasar el mouse (solo desktop) */
+@media (hover: hover) {
+    swiper-slide:hover img {
+        transform: scale(1.05);
     }
 }
 
+/* =========================================
+   4. SKELETON LOADER (El "else")
+   ========================================= */
 .skeleton-loader {
-    height: 500px;
-    background: #f0f0f0;
+    width: 100%;
+    height: 50vh;
+    /* Misma altura que el .carousel-container */
+    min-height: 300px;
+    background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+    background-size: 200% 100%;
+    border-radius: 12px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     color: #888;
+    font-family: sans-serif;
+    font-weight: 500;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* =========================================
+   5. RESPONSIVE (Móviles)
+   ========================================= */
+@media (max-width: 768px) {
+
+    .carousel-container,
+    .skeleton-loader {
+        height: 300px;
+        /* Altura más pequeña para móviles */
+        border-radius: 0;
+        /* Opcional: quitar bordes redondeados en móvil para ir de lado a lado */
+    }
+
+    swiper-container {
+        --swiper-navigation-size: 20px;
+        /* Flechas más pequeñas */
+    }
 }
