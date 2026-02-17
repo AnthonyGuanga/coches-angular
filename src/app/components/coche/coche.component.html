@@ -1,13 +1,16 @@
 <div class="main-container">
-
   <aside class="filters-sidebar">
     <h3>Filtros</h3>
 
     <form [formGroup]="filterForm">
-
       <div class="form-group">
         <label>Buscar</label>
-        <input type="text" formControlName="busqueda" placeholder="Marca o modelo..." class="input-control">
+        <input
+          type="text"
+          formControlName="busqueda"
+          placeholder="Marca o modelo..."
+          class="input-control"
+        />
       </div>
 
       <div class="form-group">
@@ -27,19 +30,31 @@
       <div class="form-group">
         <label>
           Precio máx:
-          <strong>{{ filterForm.get('precioMax')?.value | currency:'EUR':'symbol':'1.0-0' }}</strong>
+          <strong>{{
+            filterForm.controls.precioMax.value | currency : 'EUR' : 'symbol' : '1.0-0'
+          }}</strong>
         </label>
-        <input type="range" formControlName="precioMax" min="0" max="60000" step="1000" class="range-control">
+        <input
+          type="range"
+          formControlName="precioMax"
+          min="0"
+          max="60000"
+          step="1000"
+          class="range-control"
+        />
       </div>
-
     </form>
   </aside>
 
   <div class="grid-container">
-    @for (coche of filteredCoches$ | async; track coche.id) {
+    @for (coche of filteredCoches(); track coche.id) {
     <div class="car-card">
       <div class="card-image">
-        <img [src]="coche.fotoPrincipal || 'assets/proximamente.png'" [alt]="coche.modelo || 'Próximamente'" />
+        <img
+          [src]="coche.fotoPrincipal || 'assets/proximamente.png'"
+          [alt]="coche.modelo || 'Próximamente'"
+          loading="lazy"
+        />
         <span class="badge">{{ coche.marca }}</span>
       </div>
 
@@ -62,7 +77,7 @@
     </div>
     } @empty {
     <div class="no-results">
-      <p>No se encontraron coches.</p>
+      <p>No se encontraron coches con esos filtros.</p>
     </div>
     }
   </div>
