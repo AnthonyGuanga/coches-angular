@@ -60,8 +60,8 @@ export class HomeComponent implements OnInit {
           title: `${coche.marca ?? ''} ${coche.modelo ?? ''}`.trim(),
         }));
       slides.push({
-        img: 'assets/logo.png',
-        title: 'Logo de la empresa',
+        img: 'assets/anuncio-coche.png',
+        title: 'anuncio',
       });
 
       this.carouselSlides = this.shuffle(slides).slice(0, 4);
