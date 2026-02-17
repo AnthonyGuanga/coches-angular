@@ -2,7 +2,8 @@
   <!-- Bienvenida -->
   <h1>Encuentra el coche perfecto para ti</h1>
   <p class="subtitle">
-    Explora nuestras ofertas exclusivas, compara modelos y reserva tu vehículo favorito en pocos clics.
+    Explora nuestras ofertas exclusivas, compara modelos y reserva tu vehículo favorito en pocos
+    clics.
   </p>
 
   <!-- Carrusel -->
@@ -10,32 +11,38 @@
 
   <!-- Tipos de coches -->
   <div class="grid-cars">
+    @for (tipo of tiposCoche; track tipo.id) {
     <app-car-type-card
-      *ngFor="let tipo of tiposCoche"
       [tipo]="tipo"
       [active]="categoriaSeleccionada === tipo.id"
-      (selected)="filtrarPorTipo($event)">
+      (selected)="filtrarPorTipo($event)"
+    >
     </app-car-type-card>
+    }
   </div>
 
   <!-- Anuncios Destacados -->
   <div class="category-header">
     <h2 class="section-title">
-      Anuncios Destacados
-      <span *ngIf="categoriaSeleccionada; else todos" class="highlight">
-        (Mostrando: {{ categoriaSeleccionada }})
-      </span>
-      <ng-template #todos>
-        <span class="subtitle">(coches más nuevos)</span>
-      </ng-template>
+      Anuncios Destacados @if (categoriaSeleccionada) {
+      <span class="highlight"> (Mostrando: {{ categoriaSeleccionada }}) </span>
+      } @else {
+      <span class="subtitle">(coches más nuevos)</span>
+      }
     </h2>
   </div>
 
   <!-- Lista de coches destacados -->
-  <div class="anuncios-grid" *ngIf="(coches$ | async) as coches; else noCoches">
-    <div class="anuncio" *ngFor="let coche of coches" [routerLink]="['/coche-detalle', coche.id]" style="cursor: pointer;">
+  @if ((coches$ | async); as coches) {
+  <div class="anuncios-grid">
+    @for (coche of coches; track coche.id) {
+    <div class="anuncio" [routerLink]="['/coche-detalle', coche.id]" style="cursor: pointer">
       <div class="anuncio-imagen-wrapper">
-        <img [src]="coche.fotoPrincipal || 'assets/proximamente.png'" alt="{{ coche.marca }} {{ coche.modelo }}" class="anuncio-img"/>
+        <img
+          [src]="coche.fotoPrincipal || 'assets/proximamente.png'"
+          alt="{{ coche.marca }} {{ coche.modelo }}"
+          class="anuncio-img"
+        />
       </div>
 
       <div class="anuncio-content">
@@ -46,21 +53,22 @@
           {{ coche.anio }} • {{ coche.combustible }} • {{ coche.cambio }}
         </p>
         <span class="anuncio-precio">
-          {{ coche.precio | currency:'EUR':'symbol':'1.0-0' }}
+          {{ coche.precio | currency : 'EUR' : 'symbol' : '1.0-0' }}
         </span>
       </div>
     </div>
-  </div>
-
-  <!-- Mensaje si no hay coches -->
-  <ng-template #noCoches>
+    } @empty {
+    <!-- Mensaje si no hay coches -->
     <div style="grid-column: 1 / -1; text-align: center; padding: 40px">
       <p style="font-size: 1.2rem; color: #64748b">
-        No hay coches disponibles para <strong>{{ categoriaSeleccionada || 'esta categoría' }}</strong>
+        No hay coches disponibles para
+        <strong>{{ categoriaSeleccionada || 'esta categoría' }}</strong>
       </p>
       <button (click)="filtrarPorTipo(categoriaSeleccionada!)" class="btn-reset">
         Ver todos los coches
       </button>
     </div>
-  </ng-template>
+    }
+  </div>
+  }
 </main>

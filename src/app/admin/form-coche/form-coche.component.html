@@ -4,25 +4,27 @@
     <mat-icon>directions_car</mat-icon>
   </div>
 
-  <form [formGroup]="form" (ngSubmit)="saveCoche()">  <!-- Cuando el usuario pulsa el botón type="submit", Angular ejecuta saveCoche()-->
+  <form [formGroup]="form" (ngSubmit)="saveCoche()">
+    <!-- Cuando el usuario pulsa el botón type="submit", Angular ejecuta saveCoche()-->
+
     <!-- Marca / Modelo -->
     <div class="fila-2-col">
       <mat-form-field appearance="outline">
         <mat-label>Marca</mat-label>
         <input matInput formControlName="marca" />
 
-        <mat-error *ngIf="form.get('marca')?.hasError('required') && form.get('marca')?.touched">
-          La marca es obligatoria
-        </mat-error>
+        @if (form.get('marca')?.hasError('required') && form.get('marca')?.touched) {
+        <mat-error> La marca es obligatoria </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Modelo</mat-label>
         <input matInput formControlName="modelo" />
 
-        <mat-error *ngIf="form.get('modelo')?.hasError('required') && form.get('modelo')?.touched">
-          El modelo es obligatorio
-        </mat-error>
+        @if (form.get('modelo')?.hasError('required') && form.get('modelo')?.touched) {
+        <mat-error> El modelo es obligatorio </mat-error>
+        }
       </mat-form-field>
     </div>
 
@@ -32,26 +34,22 @@
         <mat-label>Motor</mat-label>
         <input matInput formControlName="motor" placeholder="Ej. 2.0 TDI" />
 
-        <mat-error *ngIf="form.get('motor')?.hasError('required') && form.get('motor')?.touched">
-          El motor es obligatorio
-        </mat-error>
+        @if (form.get('motor')?.hasError('required') && form.get('motor')?.touched) {
+        <mat-error> El motor es obligatorio </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Año</mat-label>
-        <input matInput type="number" formControlName="anio" [min]="1980" [max]="anioActual"/>
-      
-        <mat-error *ngIf="form.get('anio')?.hasError('required') && form.get('anio')?.touched">
-          El año es obligatorio
-        </mat-error>
+        <input matInput type="number" formControlName="anio" [min]="1980" [max]="anioActual" />
 
-        <mat-error *ngIf="form.get('anio')?.hasError('min') && form.get('anio')?.touched">
-          No puede ser menor que 1980
-        </mat-error>
-
-        <mat-error *ngIf="form.get('anio')?.hasError('max') && form.get('anio')?.touched">
-          No puede ser mayor que {{ anioActual }}
-        </mat-error>
+        @if (form.get('anio')?.hasError('required') && form.get('anio')?.touched) {
+        <mat-error> El año es obligatorio </mat-error>
+        } @if (form.get('anio')?.hasError('min') && form.get('anio')?.touched) {
+        <mat-error> No puede ser menor que 1980 </mat-error>
+        } @if (form.get('anio')?.hasError('max') && form.get('anio')?.touched) {
+        <mat-error> No puede ser mayor que {{ anioActual }} </mat-error>
+        }
       </mat-form-field>
     </div>
 
@@ -62,26 +60,22 @@
         <input matInput type="number" formControlName="precio" />
         <mat-icon matSuffix>euro</mat-icon>
 
-        <mat-error *ngIf="form.get('precio')?.hasError('required') && form.get('precio')?.touched">
-          El precio es obligatorio
-        </mat-error>
-
-        <mat-error *ngIf="form.get('precio')?.hasError('min') && form.get('precio')?.touched">
-          El precio mínimo es 1000 €
-        </mat-error>
+        @if (form.get('precio')?.hasError('required') && form.get('precio')?.touched) {
+        <mat-error> El precio es obligatorio </mat-error>
+        } @if (form.get('precio')?.hasError('min') && form.get('precio')?.touched) {
+        <mat-error> El precio mínimo es 1000 € </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Kilometraje</mat-label>
         <input matInput type="number" formControlName="kilometraje" />
 
-        <mat-error *ngIf="form.get('kilometraje')?.hasError('required') && form.get('kilometraje')?.touched">
-          El kilometraje es obligatorio
-        </mat-error>
-
-        <mat-error *ngIf="form.get('kilometraje')?.hasError('min') && form.get('kilometraje')?.touched">
-          No puede ser negativo
-        </mat-error>
+        @if (form.get('kilometraje')?.hasError('required') && form.get('kilometraje')?.touched) {
+        <mat-error> El kilometraje es obligatorio </mat-error>
+        } @if (form.get('kilometraje')?.hasError('min') && form.get('kilometraje')?.touched) {
+        <mat-error> No puede ser negativo </mat-error>
+        }
       </mat-form-field>
     </div>
 
@@ -90,27 +84,31 @@
       <mat-form-field appearance="fill">
         <mat-label>Combustible</mat-label>
         <mat-select formControlName="combustible">
-          <mat-option *ngFor="let c of listaCombustibles" [value]="c">
+          @for (c of listaCombustibles; track c) {
+          <mat-option [value]="c">
             {{ c }}
           </mat-option>
+          }
         </mat-select>
 
-        <mat-error *ngIf="form.get('combustible')?.hasError('required') && form.get('combustible')?.touched">
-          Debe seleccionar un combustible
-        </mat-error>
+        @if (form.get('combustible')?.hasError('required') && form.get('combustible')?.touched) {
+        <mat-error> Debe seleccionar un combustible </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="fill">
         <mat-label>Cambio</mat-label>
         <mat-select formControlName="cambio">
-          <mat-option *ngFor="let c of listaCambios" [value]="c">
+          @for (c of listaCambios; track c) {
+          <mat-option [value]="c">
             {{ c }}
           </mat-option>
+          }
         </mat-select>
 
-        <mat-error *ngIf="form.get('cambio')?.hasError('required') && form.get('cambio')?.touched">
-          Debe seleccionar un tipo de cambio
-        </mat-error>
+        @if (form.get('cambio')?.hasError('required') && form.get('cambio')?.touched) {
+        <mat-error> Debe seleccionar un tipo de cambio </mat-error>
+        }
       </mat-form-field>
     </div>
 
@@ -118,14 +116,16 @@
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Tipo de vehículo</mat-label>
       <mat-select formControlName="tipo" multiple>
-        <mat-option *ngFor="let t of listaTipos" [value]="t">
+        @for (t of listaTipos; track t) {
+        <mat-option [value]="t">
           {{ t }}
         </mat-option>
+        }
       </mat-select>
 
-      <mat-error *ngIf="form.get('tipo')?.hasError('required') && form.get('tipo')?.touched">
-        Debe seleccionar al menos un tipo
-      </mat-error>
+      @if (form.get('tipo')?.hasError('required') && form.get('tipo')?.touched) {
+      <mat-error> Debe seleccionar al menos un tipo </mat-error>
+      }
     </mat-form-field>
 
     <!-- Fotos -->

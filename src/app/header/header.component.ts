@@ -20,7 +20,7 @@ export class HeaderComponent {
       await this.authService.logout();
       // El servicio ya se encarga de redirigir al login
     } catch (error) {
-      console.error("Error al cerrar sesión desde el componente:", error);
+      console.error('Error al cerrar sesión desde el componente:', error);
     }
   }
 }

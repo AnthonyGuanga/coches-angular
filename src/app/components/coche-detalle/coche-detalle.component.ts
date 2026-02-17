@@ -1,16 +1,17 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Observable, switchMap, map, take, of } from 'rxjs';
+import { Observable, switchMap, map, take, of, firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
 import { register } from 'swiper/element/bundle';
 import { CochesService, Coche } from '../../services/coches.service';
 import { AuthService } from '../../services/auth.service';
+import { ReservaService } from '../../services/reserva.service';
 
 // --- IMPORTACIONES DE ANGULAR MATERIAL ---
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button'; // 👈 Necesario para mat-flat-button
-import { MatIconModule } from '@angular/material/icon';     // 👈 Necesario para mat-icon
+import { MatIconModule } from '@angular/material/icon'; // 👈 Necesario para mat-icon
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Para el spinner de carga
 import { MatDialog } from '@angular/material/dialog'; // Para abrir el modal de imagen
 import { ImagenModalComponent } from '../imagen/imagen.component';
@@ -22,12 +23,12 @@ register();
   standalone: true,
   // Agregamos los módulos de Material aquí para que el HTML los reconozca
   imports: [
-    CommonModule, 
-    MatTableModule, 
-    RouterModule, 
-    MatButtonModule, 
+    CommonModule,
+    MatTableModule,
+    RouterModule,
+    MatButtonModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
   templateUrl: './coche-detalle.component.html',
   styleUrl: './coche-detalle.component.css',
@@ -39,6 +40,7 @@ export class CategoryDetalleComponent implements OnInit {
   private cochesService = inject(CochesService);
   public authService = inject(AuthService);
   private dialog = inject(MatDialog);
+  private reservaService = inject(ReservaService);
 
   coche$!: Observable<Coche & { reservadorNombre?: string }>;
 
@@ -47,12 +49,12 @@ export class CategoryDetalleComponent implements OnInit {
       switchMap((params) => {
         const id = params.get('id') || '';
         return this.cochesService.getCocheById(id).pipe(
-          switchMap(coche => {
+          switchMap((coche) => {
             if (coche?.reservadoPor) {
               // Si hay UID del usuario, buscamos su nombre
-              return this.authService.getUserById(coche.reservadoPor).pipe(
-                map(userData => ({ ...coche, reservadorNombre: userData?.['nombre'] }))
-              );
+              return this.authService
+                .getUserById(coche.reservadoPor)
+                .pipe(map((userData) => ({ ...coche, reservadorNombre: userData?.['nombre'] })));
             }
             return of(coche);
           })
@@ -65,6 +67,12 @@ export class CategoryDetalleComponent implements OnInit {
     this.authService.appUser$.pipe(take(1)).subscribe(async (user) => {
       if (user) {
         try {
+          // --- Validar antes de reservar ---
+          const actuales: any = await firstValueFrom(this.reservaService.getMisReservas());
+          if (actuales.length >= 2) {
+            return alert('Ya tienes 2 reservas. No puedes añadir más.');
+          }
+
           await this.cochesService.reservarCoche(idCoche, user.uid);
           alert('¡Coche reservado con éxito!');
         } catch (error) {
@@ -103,8 +111,7 @@ export class CategoryDetalleComponent implements OnInit {
   abrirImagen(url: string, alt: string) {
     this.dialog.open(ImagenModalComponent, {
       data: { url, alt },
-      panelClass: 'custom-dialog-container'
+      panelClass: 'custom-dialog-container',
     });
   }
-
 }

@@ -1,131 +1,143 @@
-<ng-container *ngIf="coche$ | async as coche; else loading">
-  <div *ngIf="coche" class="container fade-in"> <!-- 🔹 seguridad extra -->
-    <div class="header-detalle">
-      <h1 class="titulo">
-        {{ coche.marca }} <span class="modelo">{{ coche.modelo }}</span>
-      </h1>
+@if (coche$ | async; as coche) { @if (coche) {
+<div class="container fade-in">
+  <!-- 🔹 seguridad extra -->
 
-      <div class="acciones">
-        <!-- Solo admin ve editar y eliminar -->
-        <ng-container *ngIf="authService.appUser$ | async as user">
-          <button 
-            *ngIf="user.rol === 'administrador'"
-            mat-fab 
-            extended 
-            color="primary" 
-            [routerLink]="['/admin/form-coche', coche.id]">
-            <mat-icon>edit</mat-icon>
-            Editar Coche
-          </button>
+  <div class="header-detalle">
+    <h1 class="titulo">
+      {{ coche.marca }} <span class="modelo">{{ coche.modelo }}</span>
+    </h1>
 
-          <button 
-            *ngIf="user.rol === 'administrador'"
-            mat-fab 
-            extended 
-            color="warn"
-            (click)="deleteCar(coche.id)">
-            <mat-icon>delete</mat-icon>
-            Eliminar
-          </button>
-        </ng-container>
-      </div>
-    </div>
-
-    <div class="contenido-principal">
-      <div class="imagen-wrapper">
-        <img 
-          [src]="(coche.fotoPrincipal && coche.fotoPrincipal.length > 5) ? coche.fotoPrincipal : 'assets/proximamente.png'" 
-          class="img-principal" 
-          alt="Foto principal" (click)="abrirImagen(coche.fotoPrincipal || 'assets/proximamente.png', 'Foto principal')"/>
-      </div>
-
-      <div class="ficha-tecnica">
-        <h2>Especificaciones</h2>
-
-        <div class="dato-item">
-          <span class="label">Año</span>
-          <span class="valor">{{ coche.anio }}</span>
-        </div>
-        <div class="dato-item">
-          <span class="label">Cambio</span>
-          <span class="valor">{{ coche.cambio }}</span>
-        </div>
-        <div class="dato-item">
-          <span class="label">Combustible</span>
-          <span class="valor">{{ coche.combustible }}</span>
-        </div>
-
-        <div class="dato-item" *ngIf="coche.tipo?.length">
-          <span class="label">Carrocería</span>
-          <span class="valor">{{ coche.tipo?.join(', ') }}</span>
-        </div>
-
-        <div class="dato-item" *ngIf="coche.tipo?.length">
-          <span class="label">Kilometraje</span>
-          <span class="valor">{{ coche.kilometraje }} km</span>
-        </div>
-
-        <div class="dato-item" *ngIf="coche.tipo?.length">
-          <span class="label">Motor</span>
-          <span class="valor">{{ coche.motor }}</span>
-        </div>
-
-        <div class="precio-tag" *ngIf="coche.precio">
-          {{ coche.precio | currency:'EUR' }}
-        </div>
-
-        <div class="reserva-wrapper" *ngIf="authService.appUser$ | async as user">
-          <!-- Botón normal de reservar para usuarios -->
-          <button *ngIf="!coche.reservadoPor" mat-flat-button color="primary" class="btn-reservar-full" (click)="ejecutarReserva(coche.id)">
-            <mat-icon>event_available</mat-icon>
-            Reservar ahora
-          </button>
-
-          <!-- Si ya está reservado -->
-          <div *ngIf="coche.reservadoPor" class="aviso-reservado">
-            <mat-icon>lock</mat-icon>
-            <span>Vehículo no disponible (Reservado)</span>
-
-            <!-- Mostrar nombre del usuario que reservó -->
-            <div *ngIf="user.rol === 'administrador' && coche.reservadorNombre">
-              <small>Reservado por: {{ coche.reservadorNombre }}</small>
-            </div>
-
-            <!-- ADMIN: botón para quitar reserva -->
-            <button *ngIf="user.rol === 'administrador'" mat-stroked-button color="warn" (click)="removeReserva(coche.id)">
-              <mat-icon>lock_open</mat-icon>
-              Quitar reserva
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="galeria-section">
-      <h3>Galería de Imágenes</h3>
-      <div class="fotos-grid">
-
-        <!-- Si hay fotos, mostramos normalmente -->
-        <ng-container *ngIf="coche.fotos?.length; else noFotosGaleria">
-          <div class="foto-card" *ngFor="let fotoUrl of coche.fotos">
-            <img [src]="fotoUrl" alt="Foto galería" class="clickable-img" (click)="abrirImagen(fotoUrl, 'Foto galería')"/>
-          </div>
-        </ng-container>
-
-        <!-- Bloque alternativo cuando NO hay fotos -->
-        <ng-template #noFotosGaleria>
-          <div class="sin-fotos">
-            <p>Imágenes disponibles muy pronto</p>
-          </div>
-        </ng-template>
-      </div>
+    <div class="acciones">
+      <!-- Solo admin ve editar y eliminar -->
+      @if (authService.appUser$ | async; as user) { @if (user.rol === 'administrador') {
+      <button mat-fab extended color="primary" [routerLink]="['/admin/form-coche', coche.id]">
+        <mat-icon>edit</mat-icon>
+        Editar Coche
+      </button>
+      } @if (user.rol === 'administrador') {
+      <button mat-fab extended color="warn" (click)="deleteCar(coche.id)">
+        <mat-icon>delete</mat-icon>
+        Eliminar
+      </button>
+      } }
     </div>
   </div>
-</ng-container>
 
-<ng-template #loading>
-  <div class="loading-container">
-    <mat-spinner diameter="50"></mat-spinner>
-    <p>Cargando coche...</p>
+  <div class="contenido-principal">
+    <div class="imagen-wrapper">
+      <img
+        [src]="
+          coche.fotoPrincipal && coche.fotoPrincipal.length > 5
+            ? coche.fotoPrincipal
+            : 'assets/proximamente.png'
+        "
+        class="img-principal"
+        alt="Foto principal"
+        (click)="abrirImagen(coche.fotoPrincipal || 'assets/proximamente.png', 'Foto principal')"
+      />
+    </div>
+
+    <div class="ficha-tecnica">
+      <h2>Especificaciones</h2>
+
+      <div class="dato-item">
+        <span class="label">Año</span>
+        <span class="valor">{{ coche.anio }}</span>
+      </div>
+
+      <div class="dato-item">
+        <span class="label">Cambio</span>
+        <span class="valor">{{ coche.cambio }}</span>
+      </div>
+
+      <div class="dato-item">
+        <span class="label">Combustible</span>
+        <span class="valor">{{ coche.combustible }}</span>
+      </div>
+
+      @if (coche.tipo?.length) {
+      <div class="dato-item">
+        <span class="label">Carrocería</span>
+        <span class="valor">{{ coche.tipo?.join(', ') }}</span>
+      </div>
+      } @if (coche.kilometraje !== undefined) {
+      <div class="dato-item">
+        <span class="label">Kilometraje</span>
+        <span class="valor">{{ coche.kilometraje }} km</span>
+      </div>
+      } @if (coche.motor) {
+      <div class="dato-item">
+        <span class="label">Motor</span>
+        <span class="valor">{{ coche.motor }}</span>
+      </div>
+      } @if (coche.precio) {
+      <div class="precio-tag">
+        {{ coche.precio | currency : 'EUR' }}
+      </div>
+      } @if (authService.appUser$ | async; as user) {
+      <div class="reserva-wrapper">
+        <!-- Botón normal de reservar para usuarios -->
+        @if (!coche.reservadoPor && user.rol !== 'administrador') {
+        <button
+          mat-flat-button
+          color="primary"
+          class="btn-reservar-full"
+          (click)="ejecutarReserva(coche.id)"
+        >
+          <mat-icon>event_available</mat-icon>
+          Reservar ahora
+        </button>
+        }
+
+        <!-- Si ya está reservado -->
+        @if (coche.reservadoPor) {
+        <div class="aviso-reservado">
+          <mat-icon>lock</mat-icon>
+          <span>Vehículo no disponible (Reservado)</span>
+
+          @if (user.rol === 'administrador' && coche.reservadorNombre) {
+          <div>
+            <small>Reservado por: {{ coche.reservadorNombre }}</small>
+          </div>
+          }
+
+          <!-- ADMIN: botón para quitar reserva -->
+          @if (user.rol === 'administrador') {
+          <button mat-stroked-button color="warn" (click)="removeReserva(coche.id)">
+            <mat-icon>lock_open</mat-icon>
+            Quitar reserva
+          </button>
+          }
+        </div>
+        }
+      </div>
+      }
+    </div>
   </div>
-</ng-template>
+
+  <div class="galeria-section">
+    <h3>Galería de Imágenes</h3>
+    <div class="fotos-grid">
+      @if (coche.fotos?.length) { @for (fotoUrl of coche.fotos; track fotoUrl) {
+      <div class="foto-card">
+        <img
+          [src]="fotoUrl"
+          alt="Foto galería"
+          class="clickable-img"
+          (click)="abrirImagen(fotoUrl, 'Foto galería')"
+        />
+      </div>
+      } } @else {
+      <div class="sin-fotos">
+        <p>Imágenes disponibles muy pronto</p>
+      </div>
+      }
+    </div>
+  </div>
+</div>
+} @else {
+<div class="loading-container">
+  <mat-spinner diameter="50"></mat-spinner>
+  <p>Cargando coche...</p>
+</div>
+} }

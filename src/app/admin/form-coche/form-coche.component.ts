@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -12,8 +12,10 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-form-coche',
+  standalone: true,
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -25,13 +27,18 @@ import { CommonModule } from '@angular/common';
     MatCheckboxModule,
     MatDividerModule,
     CommonModule,
-    RouterModule
+    RouterModule,
   ],
-  standalone: true,
   templateUrl: './form-coche.component.html',
   styleUrl: './form-coche.component.css',
 })
 export class FormCocheComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private cochesService = inject(CochesService);
+  private router = inject(Router);
+  private aRouter = inject(ActivatedRoute);
+  private snackbar = inject(MatSnackBar);
+
   form: FormGroup;
   id: string | null = null;
   titulo = 'Nuevo Coche';
@@ -43,18 +50,15 @@ export class FormCocheComponent implements OnInit {
   listaCambios = ['Manual', 'Automático'];
   listaTipos = ['SUV', 'monovolumen', 'familiar', 'coupé', 'furgoneta', 'sedán', 'hatchback'];
 
-  constructor(
-    private fb: FormBuilder,
-    private cochesService: CochesService,
-    private router: Router,
-    private aRouter: ActivatedRoute,
-    private snackbar: MatSnackBar
-  ) {
+  constructor() {
     this.form = this.fb.group({
       marca: ['', Validators.required],
       modelo: ['', Validators.required],
       motor: ['', Validators.required],
-      anio: [this.anioActual, [Validators.required, Validators.min(1980), Validators.max(this.anioActual)]],
+      anio: [
+        this.anioActual,
+        [Validators.required, Validators.min(1980), Validators.max(this.anioActual)],
+      ],
       kilometraje: [0, [Validators.required, Validators.min(0)]],
       precio: [0, [Validators.required, Validators.min(1000)]],
       combustible: ['', Validators.required],

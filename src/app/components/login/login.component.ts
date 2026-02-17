@@ -9,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
   private fb = inject(FormBuilder);
@@ -26,7 +26,7 @@ export class LoginComponent {
       email: ['', [Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       telefono: ['', Validators.pattern('^[0-9]{9}$')],
-      terminos: [false]
+      terminos: [false],
     });
     this.setValidators();
   }
@@ -68,7 +68,7 @@ export class LoginComponent {
         await this.authService.register(email, password, nombre, telefono);
       }
       // Navegación inmediata: el Guard se encargará de esperar si es necesario
-      this.router.navigate(['/user']);
+      this.router.navigate(['/']);
     } catch (err: any) {
       this.errorMessage = err.message;
     }

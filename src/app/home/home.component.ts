@@ -15,9 +15,8 @@ import { CarTypeCardComponent } from '../components/car-type-card/car-type-card.
 })
 export class HomeComponent implements OnInit {
   coches$!: Observable<Coche[]>;
-  categoriaSeleccionada: (typeof this.tiposCoche[number]['id']) | null = null;
+  categoriaSeleccionada: (typeof this.tiposCoche)[number]['id'] | null = null;
   carouselSlides: { img: string; title?: string }[] = [];
-
 
   tiposCoche = [
     { id: 'SUV', label: 'SUV', icon: 'suv' },
@@ -28,7 +27,6 @@ export class HomeComponent implements OnInit {
     { id: 'sedán', label: 'sedán', icon: 'sedán' },
     { id: 'hatchback', label: 'hatchback', icon: 'hatchback' },
   ];
-
 
   filtrarPorTipo(tipo: string) {
     this.categoriaSeleccionada = this.categoriaSeleccionada === tipo ? null : tipo;
@@ -46,25 +44,24 @@ export class HomeComponent implements OnInit {
 
   cargarCoches() {
     this.coches$ = this.cochesService.getCoches(this.categoriaSeleccionada).pipe(
-      map(coches => {
+      map((coches) => {
         // Filtramos solo coches desde 2020
-        return coches.filter(c => Number(c.anio) >= 2022);
+        return coches.filter((c) => Number(c.anio) >= 2022);
       })
     );
   }
 
   cargarCarrusel() {
-    this.cochesService.getCoches(null).subscribe(coches => {
-
+    this.cochesService.getCoches(null).subscribe((coches) => {
       const slides = coches
-        .filter(c => !!c.fotoPrincipal)
-        .map(coche => ({
+        .filter((c) => !!c.fotoPrincipal)
+        .map((coche) => ({
           img: coche.fotoPrincipal!,
-          title: `${coche.marca ?? ''} ${coche.modelo ?? ''}`.trim()
+          title: `${coche.marca ?? ''} ${coche.modelo ?? ''}`.trim(),
         }));
       slides.push({
         img: 'assets/logo.png',
-        title: 'Logo de la empresa'
+        title: 'Logo de la empresa',
       });
 
       this.carouselSlides = this.shuffle(slides).slice(0, 4);
@@ -73,7 +70,7 @@ export class HomeComponent implements OnInit {
 
   private shuffle<T>(array: T[]): T[] {
     return array
-      .map(v => ({ v, r: Math.random() }))
+      .map((v) => ({ v, r: Math.random() }))
       .sort((a, b) => a.r - b.r)
       .map(({ v }) => v);
   }

@@ -1,5 +1,5 @@
 .header-container {
-  position: sticky;          /* Fijo en la parte superior */
+  position: fixed; /* Fijo en la parte superior */
   top: 0;
   left: 0;
   width: 100%;
@@ -10,7 +10,7 @@
   align-items: center;
   padding: 10px 40px;
   font-family: 'Inter', sans-serif;
-  z-index: 1000;           /* Siempre encima del contenido */
+  z-index: 1000; /* Siempre encima del contenido */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   box-sizing: border-box;
 }

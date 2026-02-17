@@ -1,35 +1,29 @@
 <header class="header-container">
   <!-- LOGO / TÍTULO -->
   <div class="logo" routerLink="/">
-    <a routerLink="/" class="logo">
-      <img src="assets/logoTrans.png" alt="Angular Motors" class="logo-img" />
-      <span>Angular Motors</span>
-    </a>
+    <img src="assets/logoTrans.png" alt="Angular Motors" class="logo-img" />
+    <span>Angular Motors</span>
   </div>
 
   <!-- NAVEGACIÓN -->
   <nav class="nav-links">
     <a routerLink="/category" class="link">Coches</a>
 
-    <!-- Usuario logueado -->
-    <ng-container *ngIf="authService.appUser$ | async as user; else noLogueado">
-      <!-- Saludo -->
-      <span class="user-info">Bienvenid@, {{ user.nombre }}</span>
-      <div class="user-header">
-        <!-- Botones -->
-        <div class="user-buttons">
-          <a routerLink="/user" class="link">Mis Reservas</a>
-          <a (click)="logout()" class="link logout-btn">Cerrar Sesión</a>
-          <a *ngIf="user.rol === 'administrador'" routerLink="/admin/form-coche" class="link">
-            Agregar Coche
-          </a>
-        </div>
+    @if (authService.appUser$ | async; as user) {
+    <span class="user-info">Bienvenid@, {{ user.nombre }}</span>
+    <div class="user-header">
+      <div class="user-buttons">
+        @if (user.rol !== 'administrador') {
+        <a routerLink="/user" class="link">Mis Reservas</a>
+        }
+        <a (click)="logout()" class="link logout-btn">Cerrar Sesión</a>
+        @if (user.rol === 'administrador') {
+        <a routerLink="/admin/form-coche" class="link">Agregar Coche</a>
+        }
       </div>
-    </ng-container>
-
-    <!-- Usuario no logueado -->
-    <ng-template #noLogueado>
-      <a routerLink="/login" class="link">Login</a>
-    </ng-template>
+    </div>
+    } @else {
+    <a routerLink="/login" class="link">Login</a>
+    }
   </nav>
 </header>
