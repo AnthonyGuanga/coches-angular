@@ -1,44 +1,120 @@
-.user-container {
-    padding: 20px;
-    max-width: 900px;
-    margin: 0 auto;
+/* --- Variables compartidas con el resto de la web --- */
+:host {
+    --primary: #2563eb;
+    --danger: #ef4444;
+    --dark: #1e293b;
+    --light: #f8fafc;
+    --gray: #64748b;
+    --radius: 16px;
+    --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
 }
 
-.user-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: var(--dark);
+}
+
+/* Título estilo "Coche Detalle" */
+h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* Animación de entrada */
+.fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Reemplazamos las filas de Bootstrap por un Grid moderno */
+.row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+/* Tarjeta de Coche Reservado */
+.card {
     background: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
-.user-table th, .user-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
-.user-table th {
-    background-color: #f4f4f4;
-    color: #333;
+.card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
 }
 
-.btn-delete {
-    background-color: #ff4d4d;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
+.card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--dark);
+}
+
+.card-text {
+    font-size: 1.1rem;
+    color: var(--gray);
+    font-weight: 600;
+}
+
+/* Botón de Quitar Reserva estilo "Angular Material" */
+.btn-danger {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    padding: 0.8rem;
+    border-radius: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: all 0.2s ease;
+    width: 100%;
+    margin-top: auto;
 }
 
-.btn-delete:hover {
-    background-color: #cc0000;
+.btn-danger:hover {
+    background-color: #b91c1c;
+    color: white;
 }
 
-.no-data {
+/* Estados vacíos y carga */
+.sin-reservas, .cargando {
     text-align: center;
-    padding: 40px;
-    color: #666;
+    padding: 4rem;
+    background: #f1f5f9;
+    border-radius: var(--radius);
+    color: var(--gray);
+    font-weight: 500;
 }
